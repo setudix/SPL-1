@@ -28,5 +28,6 @@ int myStrLen(char *base)
 
 int myStrCmp(char *a, char *b)
 {
+    // Needs to be finished.
     return 0;
 }
