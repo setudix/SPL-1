@@ -11,7 +11,7 @@ private:
     int hour;
     int min;
     int sec;
-
+    
 public:
     Time();
     Time(std::string);

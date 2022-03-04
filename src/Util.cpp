@@ -2,7 +2,7 @@
 
 std::string Util::getCurrentTimeCommand()
 {
-    return "date +%F%r";
+    return "date +%F\" \"%X";
 }
 
 std::string Util::getUptimeCommand()

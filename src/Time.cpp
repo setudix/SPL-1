@@ -84,8 +84,9 @@ void Time::displayTime()
 	printf("%03dd %02d:%02d:%02d\n", day, hour, min, sec);
 }
 void Time::setTime(std::string str)
-{
-	sscanf(str.c_str(), "%d %*c %d %*c %d %d %*c %d %*c %d %*s",
+{	
+	// 2022-03-05 03:56:40
+	sscanf(str.c_str(), "%d %*c %d %*c %d %d %*c %d %*c %d",
 		   &year, &month, &day, &hour, &min, &sec);
 }
 void Time::setTime(long long temp)
