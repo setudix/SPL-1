@@ -9,5 +9,6 @@ public:
     Util();
     static std::string getCurrentTimeCommand();
     static std::string getUptimeCommand();
+    static std::string getPsCommand();
 };
 #endif

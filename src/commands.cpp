@@ -2,11 +2,11 @@
 #include <iostream>
 #include <stdexcept>
 #include <sys/stat.h>
-#include <string>
+
 #include "../include/commands.h"
 #include "../include/mystring.h"
 
-#define BUFFER_SIZE 128
+#define BUFFER_SIZE 256
 #define STR_SIZE 1024
 
 std::string runCommand(std::string command, const char *mode)
@@ -15,7 +15,9 @@ std::string runCommand(std::string command, const char *mode)
     std::string res;
     FILE *pipe = popen((const char *)command.c_str(), mode);
     if (!pipe)
+    {
         throw std::runtime_error("popen() failed");
+    }
     try
     {
         while (fgets(buffer, sizeof buffer, pipe) != NULL)
@@ -32,4 +34,34 @@ std::string runCommand(std::string command, const char *mode)
     res.pop_back();
 
     return res;
+}
+
+void runCommand(std::string command, const char *mode, std::vector<Process> &proc)
+{
+    char buffer[BUFFER_SIZE];
+    FILE *pipe = popen((const char *)command.c_str(), mode);
+
+    if (!pipe)
+    {
+        throw std::runtime_error("can't read ps command");
+    }
+    try
+    {
+        // ignore the first line
+        fgets(buffer, sizeof buffer, pipe);
+
+        std::string temp;
+        while (fgets(buffer, sizeof buffer, pipe))
+        {
+            temp = buffer;
+            temp.pop_back();
+            proc.push_back({temp});
+        }
+    }
+    catch (...)
+    {
+        pclose(pipe);
+        throw;
+    }
+    pclose(pipe);
 }

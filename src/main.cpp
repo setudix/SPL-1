@@ -10,6 +10,8 @@
 #include "../include/commands.h"
 #include "../include/idletime.h"
 #include "../include/InputDevice.h"
+#include "../include/Util.h"
+#include "../include/Process.h"
 
 int main()
 {
@@ -30,17 +32,11 @@ int main()
     // t3 = t1 - t2;
     // t3.displayTime();
 
-    runThreads();
-    // std::thread keyboard_thread(checkKeyboardButtonPress);
-    // std::thread mouse_thread(checkMouseActivity);
-    // std::thread idle_time_thread(elapsedTime);
+    // runThreads();
 
-    // keyboard_thread.join();
-    // mouse_thread.join();
-    // idle_time_thread.join();
-
-    // std::thread ff(f);
-    // ff.join();
+    std::vector<Process> proc;
+    runCommand(Util::getPsCommand(), "r", proc);
+    Process::displayProcess(proc);
 
     return 0;
 }
