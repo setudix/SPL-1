@@ -19,18 +19,18 @@ int main()
     // printf("uptime -- %s\ncurrent time -- %s\n", uptime.c_str(), current_time.c_str());
     //  printf("ascii vale at back of uptime = %d\n", (int)uptime.back());
 
-    Time t1(uptime);
-    Time t2(current_time);
+    // Time t1(uptime);
+    // Time t2(current_time);
 
-    t1.displayTime();
-    t2.displayTime();
+    // t1.displayTime();
+    // t2.displayTime();
 
-    Time t3 = t1 + t2;
-    t3.displayTime();
-    t3 = t1 - t2;
-    t3.displayTime();
+    // Time t3 = t1 + t2;
+    // t3.displayTime();
+    // t3 = t1 - t2;
+    // t3.displayTime();
 
-    // runThreads();
+    runThreads();
     // std::thread keyboard_thread(checkKeyboardButtonPress);
     // std::thread mouse_thread(checkMouseActivity);
     // std::thread idle_time_thread(elapsedTime);

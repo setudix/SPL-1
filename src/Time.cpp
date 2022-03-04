@@ -12,11 +12,10 @@ Time::Time()
 }
 Time::Time(std::string str)
 {
-	sscanf(str.c_str(), "%d %*c %d %*c %d %d %*c %d %*c %d %*s",
-		   &year, &month, &day, &hour, &min, &sec);
+	setTime(str);
 }
 
-void Time::displayTime()
+void Time::displayTimeWithDate()
 {
 	printf("%d-%02d-%02d  %02d:%02d:%02d\n", year, month,
 		   day, hour, min, sec);
@@ -80,6 +79,15 @@ long long Time::getTimeInSeconds()
 	return day * 86400 + hour * 3600 + min * 60 + sec;
 }
 
+void Time::displayTime()
+{
+	printf("%03dd %02d:%02d:%02d\n", day, hour, min, sec);
+}
+void Time::setTime(std::string str)
+{
+	sscanf(str.c_str(), "%d %*c %d %*c %d %d %*c %d %*c %d %*s",
+		   &year, &month, &day, &hour, &min, &sec);
+}
 void Time::setTime(long long temp)
 {
 	day = temp / 86400;

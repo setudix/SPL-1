@@ -1,5 +1,7 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-std::string runCommand (const char* command, const char* mode);
+#include<string> 
+
+std::string runCommand (std::string command, const char* mode);
 #endif

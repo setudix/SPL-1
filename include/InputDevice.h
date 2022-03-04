@@ -13,4 +13,6 @@ struct input
 void checkIdleTime();
 void runThreads();
 
+extern bool is_idle;
+
 #endif

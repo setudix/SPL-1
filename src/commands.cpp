@@ -9,11 +9,11 @@
 #define BUFFER_SIZE 128
 #define STR_SIZE 1024
 
-std::string runCommand(const char *command, const char *mode)
+std::string runCommand(std::string command, const char *mode)
 {
     char buffer[BUFFER_SIZE];
     std::string res;
-    FILE *pipe = popen(command, mode);
+    FILE *pipe = popen((const char *)command.c_str(), mode);
     if (!pipe)
         throw std::runtime_error("popen() failed");
     try

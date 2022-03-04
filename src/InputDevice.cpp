@@ -9,16 +9,20 @@
 #include <time.h>
 #include <pthread.h>
 #include <thread>
+
 #include "../include/InputDevice.h"
 #include "../include/idletime.h"
+#include "../include/Time.h"
+#include "../include/Util.h"
+#include "../include/commands.h"
 
 // keyboard and mouse driver locations
 #define KEYBOARD_PATH "/dev/input/by-path/pci-0000:00:1d.0-usb-0:1.5:1.0-event-kbd"
 #define MOUSE_PATH "/dev/input/by-path/pci-0000:00:1d.0-usb-0:1.6:1.0-event-mouse"
 
-bool is_idle = 0;
 extern int start;
 int cnt = 0;
+
 void checkKeyboardButtonPress()
 {
     input keyboard;
@@ -31,6 +35,7 @@ void checkKeyboardButtonPress()
             {
                 is_idle = 0;
                 start = clock();
+                InactivityStart.setTime(runCommand(Util::getCurrentTimeCommand(),"r"));
                 // fflush(stdout);
                 // printf("%d.Key press!\n", ++cnt);
             }
@@ -50,6 +55,7 @@ void checkMouseActivity()
             {
                 is_idle = 0;
                 start = clock();
+                InactivityStart.setTime(runCommand(Util::getCurrentTimeCommand(),"r"));
                 // fflush(stdout);
                 // printf("%d.Mouse Activity!\n", ++cnt);
             }

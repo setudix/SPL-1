@@ -1,12 +1,64 @@
 #include <cstdio>
 #include <thread>
 #include <time.h>
+#include <mutex>
+
+#include "../include/Time.h"
+#include "../include/commands.h"
+#include "../include/Util.h"
 
 // setting the idle time
 #define IDLETIME 5
-extern bool is_idle;
+
+bool is_idle = 0;
 int start;
 int idle_time_start;
+
+Time InactivityStart;
+#define TEST 1
+
+void setStartTime()
+{
+    InactivityStart.setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
+}
+#ifdef TEST
+
+Time getIdleTime(Time IdleTimeStart)
+{
+    Time IdleTime;
+    while (is_idle)
+    {
+        Time ct(runCommand(Util::getCurrentTimeCommand(), "r"));
+        IdleTime = ct - IdleTimeStart;
+    }
+    return IdleTime;
+}
+
+void elapsedTime()
+{
+    while (1)
+    {
+        Time ct(runCommand(Util::getCurrentTimeCommand(), "r"));
+        Time diff = ct - InactivityStart;
+        if (diff.getTimeInSeconds() > IDLETIME)
+        {
+            printf("IDLE\n");
+            Time IdleTimeStart(runCommand(Util::getCurrentTimeCommand(), "r"));
+            is_idle = 1;
+            Time f = getIdleTime(IdleTimeStart);
+
+            if (f.getTimeInSeconds() > 0)
+            {
+                printf("Idle for :");
+                f.displayTime();
+            }
+        }
+    }
+}
+
+#endif
+
+#ifndef TEST
 
 double getIdleTime()
 {
@@ -38,3 +90,4 @@ void elapsedTime()
         }
     }
 }
+#endif
