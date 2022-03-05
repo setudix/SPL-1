@@ -18,7 +18,7 @@ Time::Time(std::string str)
 
 void Time::displayTimeWithDate()
 {
-	printf("%d-%02d-%02d  %02d:%02d:%02d\n", year, month,
+	printf("%d-%02d-%02d  %02d:%02d:%02d", year, month,
 		   day, hour, min, sec);
 }
 void Time::setYear(int year)
@@ -81,7 +81,7 @@ long long Time::getTimeInSeconds() const
 
 void Time::displayTime()
 {
-	printf("%03dd %02d:%02d:%02d\n", day, hour, min, sec);
+	printf("%03dd %02d:%02d:%02d", day, hour, min, sec);
 }
 void Time::setTime(std::string str)
 {
@@ -132,4 +132,10 @@ bool operator==(const Time &a, const Time &b)
 bool operator<(const Time &a, const Time &b)
 {
 	return a.getTimeInSeconds() < b.getTimeInSeconds();
+}
+
+Time Time::getCurrentTime()
+{
+	Time a(runCommand(Util::getCurrentTimeCommand(),"r"));
+	return a;
 }
