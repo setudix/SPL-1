@@ -15,8 +15,8 @@
 
 int main()
 {
-    std::string uptime = runCommand("uptime -s", "r");
-    std::string current_time = runCommand("date +%F%r", "r");
+    std::string uptime = runCommand(Util::getUptimeCommand(), "r");
+    std::string current_time = runCommand(Util::getCurrentTimeCommand(), "r");
 
     // printf("uptime -- %s\ncurrent time -- %s\n", uptime.c_str(), current_time.c_str());
     //  printf("ascii vale at back of uptime = %d\n", (int)uptime.back());
@@ -38,5 +38,24 @@ int main()
     runCommand(Util::getPsCommand(), "r", proc);
     Process::displayProcess(proc);
 
+    Process::sortProcess(proc);
+    puts("-----------------");
+    Time ct = runCommand(Util::getCurrentTimeCommand(), "r");
+    for (auto x : proc)
+    {
+        x.displayProcess();
+        Time t = x.getRunningFor(current_time);
+        printf(" running for ");
+        t.displayTime();
+    }
+
+    std::vector<Process> unique_proc;
+    unique_proc = getUniqueProcessForUser(proc, runCommand("whoami", "r"));
+
+    for (auto x : unique_proc)
+    {
+        x.displayProcess();
+        puts("");
+    }
     return 0;
 }

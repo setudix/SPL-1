@@ -11,7 +11,8 @@ private:
     int hour;
     int min;
     int sec;
-    
+    long long time_in_seconds;
+
 public:
     Time();
     Time(std::string);
@@ -24,17 +25,19 @@ public:
     void setDay(int day);
     void setMin(int min);
     void setSec(int sec);
-    int getYear();
-    int getMonth();
-    int getDay();
-    int getHour();
-    int getMin();
-    int getSec();
+    int getYear() const;
+    int getMonth() const;
+    int getDay() const;
+    int getHour() const;
+    int getMin() const;
+    int getSec() const;
     void displayTime();
-    long long getTimeInSeconds();
+    long long getTimeInSeconds() const;
 };
 
 Time operator+(Time &a, Time &b);
 Time operator-(Time &a, Time &b);
+bool operator==(const Time &a, const Time &b);
+bool operator<(const Time &a, const Time &b);
 
 #endif

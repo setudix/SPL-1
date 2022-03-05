@@ -9,6 +9,7 @@ Time::Time()
 	hour = 0;
 	min = 0;
 	sec = 0;
+	time_in_seconds = 0;
 }
 Time::Time(std::string str)
 {
@@ -44,39 +45,38 @@ void Time::setSec(int sec)
 {
 	this->sec = sec;
 }
-int Time::getYear()
+int Time::getYear() const
 {
 	return year;
 }
 
-int Time::getMonth()
+int Time::getMonth() const
 {
 	return month;
 }
 
-int Time::getDay()
+int Time::getDay() const
 {
 	return day;
 }
 
-int Time::getHour()
+int Time::getHour() const
 {
 	return hour;
 }
 
-int Time::getMin()
+int Time::getMin() const
 {
 	return min;
 }
 
-int Time::getSec()
+int Time::getSec() const
 {
 	return sec;
 }
-long long Time::getTimeInSeconds()
+long long Time::getTimeInSeconds() const
 {
-	// this is does not account for months and years **yet**
-	return day * 86400 + hour * 3600 + min * 60 + sec;
+	return time_in_seconds;
 }
 
 void Time::displayTime()
@@ -84,13 +84,17 @@ void Time::displayTime()
 	printf("%03dd %02d:%02d:%02d\n", day, hour, min, sec);
 }
 void Time::setTime(std::string str)
-{	
+{
 	// 2022-03-05 03:56:40
 	sscanf(str.c_str(), "%d %*c %d %*c %d %d %*c %d %*c %d",
 		   &year, &month, &day, &hour, &min, &sec);
+	// this is does not account for months and years **yet**
+	time_in_seconds = day * 86400 + hour * 3600 + min * 60 + sec;
 }
 void Time::setTime(long long temp)
 {
+	time_in_seconds = temp;
+
 	day = temp / 86400;
 	temp %= 86400;
 	hour = temp / 3600;
@@ -103,6 +107,7 @@ Time operator+(Time &a, Time &b)
 {
 	long long temp = a.getTimeInSeconds() + b.getTimeInSeconds();
 
+	printf(" a = %lld\n b = %lld , c = %lld \n", a.getTimeInSeconds(), b.getTimeInSeconds(), temp);
 	Time c;
 	c.setTime(temp);
 
@@ -119,4 +124,12 @@ Time operator-(Time &a, Time &b)
 	c.setTime(temp);
 
 	return c;
+}
+bool operator==(const Time &a, const Time &b)
+{
+	return a.getTimeInSeconds() == b.getTimeInSeconds();
+}
+bool operator<(const Time &a, const Time &b)
+{
+	return a.getTimeInSeconds() < b.getTimeInSeconds();
 }

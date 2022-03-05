@@ -1,5 +1,6 @@
 #include "../include/Process.h"
 #include <cstdio>
+#include <algorithm>
 #define TMPSIZE 64
 
 Process::Process(std::string str)
@@ -68,7 +69,7 @@ std::string Process::getDay(int day)
 
 void Process::displayProcess()
 {
-    printf("%-7s %-10d %-10d %20s %40s\n", user.c_str(),
+    printf("%-7s %-10d %-10d %20s %40s", user.c_str(),
            pid, ppid, lstart.c_str(), comm.c_str());
 }
 
@@ -77,10 +78,81 @@ void Process::displayProcess(std::vector<Process> &proc)
     for (auto i : proc)
     {
         i.displayProcess();
+        puts("");
     }
 }
 
-Time Process::getTime()
+std::string Process::getProcessName() const
+{
+    return comm;
+}
+Time Process::getTime() const
 {
     return start_time;
+}
+
+void Process::setTime(Time a)
+{
+    start_time = a;
+}
+std::string Process::getUser()
+{
+    return user;
+}
+Time Process::getTimeNonConstant()
+{
+    return start_time;
+}
+Time Process::getRunningFor(Time a)
+{
+    return a - start_time;
+}
+void Process::sortProcess(std::vector<Process> &proc)
+{
+    std::sort(proc.begin(), proc.end(), [](const Process &a, const Process &b)
+              { return a < b; });
+}
+
+std::vector<Process> getUniqueProcessForUser(std::vector<Process> &proc, std::string user)
+{
+    std::vector<Process> a;
+    a.push_back({proc[0]});
+    for (auto x : proc)
+    {
+        if (x.getUser() == user)
+        {
+            Process temp = a.back();
+
+            if (temp.getProcessName() == x.getProcessName())
+            {
+                if (x.getTime() < temp.getTime())
+                {
+                    temp.setTime(x.getTime());
+                }
+            }
+            else
+            {
+                a.push_back({x});
+            }
+        }
+    }
+    return a;
+}
+inline bool operator==(const Process &a, const Process &b)
+{
+    if (a.getProcessName() == b.getProcessName())
+    {
+        return a.getTime() == b.getTime();
+    }
+
+    return 0;
+}
+inline bool operator<(const Process &a, const Process &b)
+{
+    if (a.getProcessName() == b.getProcessName())
+    {
+        return a.getTime() < b.getTime();
+    }
+
+    return a.getProcessName() < b.getProcessName();
 }
