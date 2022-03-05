@@ -40,21 +40,22 @@ int main()
 
     Process::sortProcess(proc);
     puts("-----------------");
-    Time ct = runCommand(Util::getCurrentTimeCommand(), "r");
-    for (auto x : proc)
-    {
-        x.displayProcess();
-        Time t = x.getRunningFor(current_time);
-        printf(" running for ");
-        t.displayTime();
-    }
+    // Time ct = runCommand(Util::getCurrentTimeCommand(), "r");
+    // for (auto x : proc)
+    // {
+    //     x.displayProcess();
+    //     Time t = x.getRunningFor(current_time);
+    //     printf(" running for ");
+    //     t.displayTime();
+    //     puts("");
+    // }
 
     std::vector<Process> unique_proc;
     unique_proc = getUniqueProcessForUser(proc, runCommand("whoami", "r"));
-
+    Process::sortProcessByActiveTime(unique_proc);
     for (auto x : unique_proc)
     {
-        x.displayProcess();
+        x.displayProcessWithActiveTime();
         puts("");
     }
     return 0;

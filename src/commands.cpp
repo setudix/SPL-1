@@ -39,7 +39,8 @@ std::string runCommand(std::string command, const char *mode)
 void runCommand(std::string command, const char *mode, std::vector<Process> &proc)
 {
     char buffer[BUFFER_SIZE];
-    FILE *pipe = popen((const char *)command.c_str(), mode);
+        FILE *pipe = popen((const char *)command.c_str(), mode);
+    Time ct = Time::getCurrentTime();
 
     if (!pipe)
     {
@@ -55,7 +56,7 @@ void runCommand(std::string command, const char *mode, std::vector<Process> &pro
         {
             temp = buffer;
             temp.pop_back();
-            proc.push_back({temp});
+            proc.push_back({temp, ct});
         }
     }
     catch (...)

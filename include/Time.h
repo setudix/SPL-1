@@ -1,6 +1,7 @@
 #ifndef TIME_H
 #define TIME_H
 #include <string>
+#include "Util.h"
 
 class Time
 {
@@ -33,6 +34,7 @@ public:
     int getSec() const;
     void displayTime();
     long long getTimeInSeconds() const;
+    static Time getCurrentTime();
 };
 
 Time operator+(Time &a, Time &b);

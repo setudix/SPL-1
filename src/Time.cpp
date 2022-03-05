@@ -1,4 +1,5 @@
 #include "../include/Time.h"
+#include "../include/commands.h"
 #include <cstdio>
 
 Time::Time()
@@ -136,6 +137,6 @@ bool operator<(const Time &a, const Time &b)
 
 Time Time::getCurrentTime()
 {
-	Time a(runCommand(Util::getCurrentTimeCommand(),"r"));
+	Time a(runCommand(Util::getCurrentTimeCommand(), "r"));
 	return a;
 }

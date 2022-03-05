@@ -7,7 +7,11 @@ Process::Process(std::string str)
 {
     setProcess(str);
 }
-
+Process::Process(std::string str, Time current_time)
+{
+    setProcess(str);
+    active_time = start_time - current_time;
+}
 void Process::setProcess(std::string str)
 {
     char temp_user[TMPSIZE];
@@ -107,6 +111,10 @@ Time Process::getRunningFor(Time a)
 {
     return a - start_time;
 }
+Time Process::getActiveTime() const
+{
+    return active_time;
+}
 void Process::sortProcess(std::vector<Process> &proc)
 {
     std::sort(proc.begin(), proc.end(), [](const Process &a, const Process &b)
@@ -137,6 +145,19 @@ std::vector<Process> getUniqueProcessForUser(std::vector<Process> &proc, std::st
         }
     }
     return a;
+}
+
+void Process::sortProcessByActiveTime(std::vector<Process> &proc)
+{
+    sort(proc.begin(), proc.end(), [](const Process &a, const Process &b)
+         { return !(a.getActiveTime() < b.getActiveTime()); });
+}
+
+void Process::displayProcessWithActiveTime()
+{
+    displayProcess();
+    printf(" Running for : ");
+    getActiveTime().displayTime();
 }
 inline bool operator==(const Process &a, const Process &b)
 {
