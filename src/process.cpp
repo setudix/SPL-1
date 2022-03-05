@@ -23,6 +23,7 @@ void Process::setProcess(std::string str)
     user = temp_user;
     comm = temp_comm;
     lstart = (std::string)temp_year + '-' + getMonth((std::string)temp_month_name) + '-' + getDay(temp_date) + ' ' + temp_time;
+    start_time.setTime(lstart);
 }
 
 std::string Process::getMonth(std::string month)
@@ -77,4 +78,9 @@ void Process::displayProcess(std::vector<Process> &proc)
     {
         i.displayProcess();
     }
+}
+
+Time Process::getTime()
+{
+    return start_time;
 }
