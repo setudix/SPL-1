@@ -86,7 +86,7 @@ int main()
 
         if (killed)
         {
-            printf("process %s has keen killed\n", shouldKill.first.c_str());
+            printf("process %s has been killed\n", shouldKill.first.c_str());
             break;
         }
     }
