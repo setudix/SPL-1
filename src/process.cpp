@@ -159,6 +159,13 @@ void Process::displayProcessWithActiveTime()
     printf(" Running for : ");
     getActiveTime().displayTime();
 }
+
+void Process::killProcess()
+{
+    // not final
+    std::string command = "kill " + std::to_string(pid);
+    system((const char *)command.c_str());
+}
 inline bool operator==(const Process &a, const Process &b)
 {
     if (a.getProcessName() == b.getProcessName())

@@ -37,6 +37,7 @@ public:
     static void sortProcess(std::vector<Process> &proc);
     static void sortProcessByActiveTime(std::vector<Process> &proc);
     void displayProcessWithActiveTime();
+    void killProcess();
 };
 
 std::vector<Process> getUniqueProcessForUser(std::vector<Process> &proc, std::string user);

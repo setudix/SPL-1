@@ -34,11 +34,11 @@ int main()
 
     // runThreads();
 
-    std::vector<Process> proc;
-    runCommand(Util::getPsCommand(), "r", proc);
-    Process::displayProcess(proc);
+    // std::vector<Process> proc;
+    // runCommand(Util::getPsCommand(), "r", proc);
+    // Process::displayProcess(proc);
 
-    Process::sortProcess(proc);
+    // Process::sortProcess(proc);
     puts("-----------------");
     // Time ct = runCommand(Util::getCurrentTimeCommand(), "r");
     // for (auto x : proc)
@@ -50,13 +50,46 @@ int main()
     //     puts("");
     // }
 
-    std::vector<Process> unique_proc;
-    unique_proc = getUniqueProcessForUser(proc, runCommand("whoami", "r"));
-    Process::sortProcessByActiveTime(unique_proc);
-    for (auto x : unique_proc)
+    // std::vector<Process> unique_proc;
+    // unique_proc = getUniqueProcessForUser(proc, runCommand("whoami", "r"));
+    // Process::sortProcessByActiveTime(unique_proc);
+    // for (auto x : unique_proc)
+    // {
+    //     x.displayProcessWithActiveTime();
+    //     puts("");
+    // }
+
+    std::pair<std::string, long long int> shouldKill({"sublime_text", 5});
+
+    while (1)
     {
-        x.displayProcessWithActiveTime();
-        puts("");
+
+        std::vector<Process> test;
+        runCommand(Util::getPsCommand(), "r", test);
+        Process::sortProcess(test);
+        std::vector<Process> test2;
+        test2 = getUniqueProcessForUser(test, runCommand("whoami", "r"));
+        bool killed = 0;
+        for (auto x : test2)
+        {
+            if (x.getProcessName() == shouldKill.first)
+            {
+                if (x.getActiveTime().getTimeInSeconds() > shouldKill.second)
+                {
+                    x.killProcess();
+                    killed = 1;
+                }
+            }
+            if (killed)
+                break;
+        }
+
+        if (killed)
+        {
+            printf("process %s has keen killed\n", shouldKill.first.c_str());
+            break;
+        }
     }
+
     return 0;
 }
