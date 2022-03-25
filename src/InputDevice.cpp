@@ -35,7 +35,7 @@ void checkKeyboardButtonPress()
             {
                 is_idle = 0;
                 start = clock();
-                InactivityStart.setTime(runCommand(Util::getCurrentTimeCommand(),"r"));
+                InactivityStart.setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
                 // fflush(stdout);
                 // printf("%d.Key press!\n", ++cnt);
             }
@@ -55,7 +55,7 @@ void checkMouseActivity()
             {
                 is_idle = 0;
                 start = clock();
-                InactivityStart.setTime(runCommand(Util::getCurrentTimeCommand(),"r"));
+                InactivityStart.setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
                 // fflush(stdout);
                 // printf("%d.Mouse Activity!\n", ++cnt);
             }

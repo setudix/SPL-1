@@ -12,16 +12,16 @@
 #include "../include/InputDevice.h"
 #include "../include/Util.h"
 #include "../include/Process.h"
+#include "../include/bst.h"
 
 int main()
 {
     std::string uptime = runCommand(Util::getUptimeCommand(), "r");
     std::string current_time = runCommand(Util::getCurrentTimeCommand(), "r");
 
-    // printf("uptime -- %s\ncurrent time -- %s\n", uptime.c_str(), current_time.c_str());
-    //  printf("ascii vale at back of uptime = %d\n", (int)uptime.back());
-
-    // Time t1(uptime);
+    // printf("uptime\n");
+    // printf("from system command : %s\n, my parsed output : %s\n",uptime.c_str(),)
+    // // Time t1(uptime);
     // Time t2(current_time);
 
     // t1.displayTime();
@@ -34,15 +34,16 @@ int main()
 
     // runThreads();
 
-    // std::vector<Process> proc;
-    // runCommand(Util::getPsCommand(), "r", proc);
-    // Process::displayProcess(proc);
+    std::vector<Process> proc;
+    runCommand(Util::getPsCommand(), "r", proc);
 
-    // Process::sortProcess(proc);
-    puts("-----------------");
+    Process::sortProcess(proc);
+    // puts("-----------------");
     // Time ct = runCommand(Util::getCurrentTimeCommand(), "r");
+    int cnt = 0;
     // for (auto x : proc)
     // {
+    //     printf("%d. ", ++cnt);
     //     x.displayProcess();
     //     Time t = x.getRunningFor(current_time);
     //     printf(" running for ");
@@ -50,46 +51,56 @@ int main()
     //     puts("");
     // }
 
-    // std::vector<Process> unique_proc;
-    // unique_proc = getUniqueProcessForUser(proc, runCommand("whoami", "r"));
-    // Process::sortProcessByActiveTime(unique_proc);
+    std::vector<Process> unique_proc;
+    unique_proc = getUniqueProcessForUser(proc, runCommand("whoami", "r"));
+    Process::sortProcessByActiveTime(unique_proc);
+    cnt = 0;
     // for (auto x : unique_proc)
     // {
+    //     printf("%d. ", ++cnt);
     //     x.displayProcessWithActiveTime();
     //     puts("");
     // }
 
-    std::pair<std::string, long long int> shouldKill({"sublime_text", 5});
-
+    BST bst_test(unique_proc);
     while (1)
     {
+        std::string x;
+        std::cin >> x;
 
-        std::vector<Process> test;
-        runCommand(Util::getPsCommand(), "r", test);
-        Process::sortProcess(test);
-        std::vector<Process> test2;
-        test2 = getUniqueProcessForUser(test, runCommand("whoami", "r"));
-        bool killed = 0;
-        for (auto x : test2)
-        {
-            if (x.getProcessName() == shouldKill.first)
-            {
-                if (x.getActiveTime().getTimeInSeconds() > shouldKill.second)
-                {
-                    x.killProcess();
-                    killed = 1;
-                }
-            }
-            if (killed)
-                break;
-        }
-
-        if (killed)
-        {
-            printf("process %s has been killed\n", shouldKill.first.c_str());
-            break;
-        }
+        bst_test.search(x);
     }
+    // std::pair<std::string, long long int> shouldKill({"firefox", 5});
+
+    // while (1)
+    // {
+
+    //     std::vector<Process> test;
+    //     runCommand(Util::getPsCommand(), "r", test);
+    //     Process::sortProcess(test);
+    //     std::vector<Process> test2;
+    //     test2 = getUniqueProcessForUser(test, runCommand("whoami", "r"));
+    //     bool killed = 0;
+    //     for (auto x : test2)
+    //     {
+    //         if (x.getProcessName() == shouldKill.first)
+    //         {
+    //             if (x.getActiveTime().getTimeInSeconds() > shouldKill.second)
+    //             {
+    //                 x.killProcess();
+    //                 killed = 1;
+    //             }
+    //         }
+    //         if (killed)
+    //             break;
+    //     }
+
+    //     if (killed)
+    //     {
+    //         printf("process %s has been killed\n", shouldKill.first.c_str());
+    //         break;
+    //     }
+    // }
 
     return 0;
 }

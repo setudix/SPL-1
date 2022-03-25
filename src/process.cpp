@@ -3,6 +3,9 @@
 #include <algorithm>
 #define TMPSIZE 64
 
+Process::Process()
+{
+}
 Process::Process(std::string str)
 {
     setProcess(str);
@@ -166,7 +169,7 @@ void Process::killProcess()
     std::string command = "kill " + std::to_string(pid);
     system((const char *)command.c_str());
 }
-inline bool operator==(const Process &a, const Process &b)
+bool operator==(const Process &a, const Process &b)
 {
     if (a.getProcessName() == b.getProcessName())
     {
@@ -175,7 +178,7 @@ inline bool operator==(const Process &a, const Process &b)
 
     return 0;
 }
-inline bool operator<(const Process &a, const Process &b)
+bool operator<(const Process &a, const Process &b)
 {
     if (a.getProcessName() == b.getProcessName())
     {
@@ -183,4 +186,9 @@ inline bool operator<(const Process &a, const Process &b)
     }
 
     return a.getProcessName() < b.getProcessName();
+}
+
+bool operator>(const Process &a, const Process &b)
+{
+    return !(a < b);
 }

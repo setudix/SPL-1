@@ -42,7 +42,7 @@ public:
 
 std::vector<Process> getUniqueProcessForUser(std::vector<Process> &proc, std::string user);
 
-inline bool operator==(const Process &a, const Process &b);
-inline bool operator<(const Process &a, const Process &b);
-
+bool operator==(const Process &a, const Process &b);
+bool operator<(const Process &a, const Process &b);
+bool operator>(const Process &a, const Process &b);
 #endif

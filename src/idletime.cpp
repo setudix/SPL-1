@@ -51,6 +51,7 @@ void elapsedTime()
             {
                 printf("Idle for :");
                 f.displayTime();
+                puts("");
             }
         }
     }
