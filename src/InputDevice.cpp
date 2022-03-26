@@ -9,12 +9,14 @@
 #include <time.h>
 #include <pthread.h>
 #include <thread>
+#include <chrono>
 
 #include "../include/InputDevice.h"
 #include "../include/idletime.h"
 #include "../include/Time.h"
 #include "../include/Util.h"
 #include "../include/commands.h"
+#include "../include/keycodes.h"
 
 // keyboard and mouse driver locations
 #define KEYBOARD_PATH "/dev/input/by-path/pci-0000:00:1d.0-usb-0:1.5:1.0-event-kbd"
@@ -22,6 +24,7 @@
 
 extern int start;
 int cnt = 0;
+int key_press_cnt[KEY_CODE_SIZE];
 
 void checkKeyboardButtonPress()
 {
@@ -38,8 +41,13 @@ void checkKeyboardButtonPress()
                 InactivityStart.setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
                 // fflush(stdout);
                 // printf("%d.Key press!\n", ++cnt);
+                key_press_cnt[keyboard.code]++;
+
+                printf("%s = %d\n", key_codes[keyboard.code].c_str(), key_press_cnt[keyboard.code]);
+                fflush(stdin);
             }
         }
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 }
 
@@ -60,6 +68,7 @@ void checkMouseActivity()
                 // printf("%d.Mouse Activity!\n", ++cnt);
             }
         }
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 }
 

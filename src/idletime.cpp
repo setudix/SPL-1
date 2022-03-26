@@ -23,15 +23,14 @@ void setStartTime()
 }
 #ifdef TEST
 
-Time getIdleTime(Time IdleTimeStart)
+void getIdleTime(Time IdleTimeStart, Time &IdleTime)
 {
-    Time IdleTime;
+    Time *ct;
     while (is_idle)
     {
         Time ct(runCommand(Util::getCurrentTimeCommand(), "r"));
         IdleTime = ct - IdleTimeStart;
     }
-    return IdleTime;
 }
 
 void elapsedTime()
@@ -45,14 +44,16 @@ void elapsedTime()
             printf("IDLE\n");
             Time IdleTimeStart(runCommand(Util::getCurrentTimeCommand(), "r"));
             is_idle = 1;
-            Time f = getIdleTime(IdleTimeStart);
+            Time *IdleTime = new Time;
+            getIdleTime(IdleTimeStart, *IdleTime);
 
-            if (f.getTimeInSeconds() > 0)
+            if (IdleTime->getTimeInSeconds() > 0)
             {
                 printf("Idle for :");
-                f.displayTime();
+                IdleTime->displayTime();
                 puts("");
             }
+            delete IdleTime;
         }
     }
 }

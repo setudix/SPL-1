@@ -32,12 +32,12 @@ int main()
     // t3 = t1 - t2;
     // t3.displayTime();
 
-    // runThreads();
+    runThreads();
 
-    std::vector<Process> proc;
-    runCommand(Util::getPsCommand(), "r", proc);
+    // std::vector<Process> proc;
+    // runCommand(Util::getPsCommand(), "r", proc);
 
-    Process::sortProcess(proc);
+    // Process::sortProcess(proc);
     // puts("-----------------");
     // Time ct = runCommand(Util::getCurrentTimeCommand(), "r");
     int cnt = 0;
@@ -51,25 +51,25 @@ int main()
     //     puts("");
     // }
 
-    std::vector<Process> unique_proc;
-    unique_proc = getUniqueProcessForUser(proc, runCommand("whoami", "r"));
-    Process::sortProcessByActiveTime(unique_proc);
-    cnt = 0;
-    // for (auto x : unique_proc)
+    // std::vector<Process> unique_proc;
+    // unique_proc = getUniqueProcessForUser(proc, runCommand("whoami", "r"));
+    // Process::sortProcessByActiveTime(unique_proc);
+    // cnt = 0;
+    // // for (auto x : unique_proc)
     // {
     //     printf("%d. ", ++cnt);
     //     x.displayProcessWithActiveTime();
     //     puts("");
     // }
 
-    BST bst_test(unique_proc);
-    while (1)
-    {
-        std::string x;
-        std::cin >> x;
+    // BST bst_test(unique_proc);
+    // while (1)
+    // {
+    //     std::string x;
+    //     std::cin >> x;
 
-        bst_test.search(x);
-    }
+    //     bst_test.search(x);
+    // }
     // std::pair<std::string, long long int> shouldKill({"firefox", 5});
 
     // while (1)
