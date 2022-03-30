@@ -7,6 +7,7 @@ BST::BST()
 BST::BST(std::vector<Process> &proc)
 {
     BST();
+    root = NULL;
     for (int i = 0; i < (int)proc.size(); i++)
     {
         insert(proc[i]);
@@ -22,7 +23,7 @@ BST_Node *BST::new_node(Process &x)
     return temp;
 }
 
-void BST::insert(Process x)
+void BST::insert(Process &x)
 {
     insert(root, x);
 }
@@ -40,8 +41,14 @@ void BST::insert(BST_Node *cur, Process &x)
     else
     {
         if (cur->data.getProcessName() == x.getProcessName())
-        { // **not final ** need to work on it later.
-            cur->data = x;
+        {
+            // not yet entirely sure how this should work.
+            // for now it should just update if we find a process which
+            // was started before the one that is in the bst.
+            if (cur->data.getTime() > x.getTime())
+            {
+                cur->data = x;
+            }
             return;
         }
         if (cur->data < x)
@@ -97,4 +104,21 @@ void BST::search(BST_Node *cur, std::string &name)
     {
         search(cur->left, name);
     }
+}
+
+void BST::printBST()
+{
+    printBST(root);
+}
+
+void BST::printBST(BST_Node *cur)
+{
+    if (cur == NULL)
+    {
+        return;
+    }
+    printBST(cur->left);
+    cur->data.displayProcessWithActiveTime();
+    puts("");
+    printBST(cur->right);
 }

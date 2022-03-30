@@ -32,6 +32,7 @@ void Process::setProcess(std::string str)
     comm = temp_comm;
     lstart = (std::string)temp_year + '-' + getMonth((std::string)temp_month_name) + '-' + getDay(temp_date) + ' ' + temp_time;
     start_time.setTime(lstart);
+    hasBeenClosed = 0;
 }
 
 std::string Process::getMonth(std::string month)
@@ -106,7 +107,7 @@ std::string Process::getUser()
 {
     return user;
 }
-Time Process::getTimeNonConstant()
+Time Process::getTime()
 {
     return start_time;
 }
@@ -168,6 +169,15 @@ void Process::killProcess()
     // not final
     std::string command = "kill " + std::to_string(pid);
     system((const char *)command.c_str());
+}
+bool Process::getHasBeenClosed()
+{
+    return hasBeenClosed;
+}
+
+void Process::setHasBeenClosed(bool x)
+{
+    hasBeenClosed = x;
 }
 bool operator==(const Process &a, const Process &b)
 {

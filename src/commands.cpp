@@ -66,3 +66,35 @@ void runCommand(std::string command, const char *mode, std::vector<Process> &pro
     }
     pclose(pipe);
 }
+
+void runCommand(std::string command, const char *mode, MyVector<Process> &proc)
+{
+    char buffer[BUFFER_SIZE];
+    FILE *pipe = popen((const char *)command.c_str(), mode);
+    Time ct = Time::getCurrentTime();
+
+    if (!pipe)
+    {
+        throw std::runtime_error("can't read ps command");
+    }
+    try
+    {
+        // ignore the first line
+        fgets(buffer, sizeof buffer, pipe);
+
+        std::string temp;
+        while (fgets(buffer, sizeof buffer, pipe))
+        {
+            temp = buffer;
+            temp.pop_back();
+            Process proc_temp(temp, ct);
+            proc.push_back(proc_temp);
+        }
+    }
+    catch (...)
+    {
+        pclose(pipe);
+        throw;
+    }
+    pclose(pipe);
+}

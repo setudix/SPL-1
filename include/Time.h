@@ -41,5 +41,5 @@ Time operator+(Time &a, Time &b);
 Time operator-(Time &a, Time &b);
 bool operator==(const Time &a, const Time &b);
 bool operator<(const Time &a, const Time &b);
-
+bool operator>(const Time &a, const Time &b);
 #endif

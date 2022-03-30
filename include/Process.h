@@ -19,6 +19,7 @@ private:
     std::string getDay(int day);
     Time start_time;
     Time active_time;
+    bool hasBeenClosed;
 
 public:
     Process();
@@ -30,7 +31,7 @@ public:
     Time getTime() const;
     void setTime(Time a);
     std::string getUser();
-    Time getTimeNonConstant();
+    Time getTime();
     std::string getProcessName() const;
     Time getRunningFor(Time a);
     Time getActiveTime() const;
@@ -38,6 +39,8 @@ public:
     static void sortProcessByActiveTime(std::vector<Process> &proc);
     void displayProcessWithActiveTime();
     void killProcess();
+    bool getHasBeenClosed();
+    void setHasBeenClosed(bool x);
 };
 
 std::vector<Process> getUniqueProcessForUser(std::vector<Process> &proc, std::string user);

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include <algorithm>
 
 #include "../include/mystring.h"
 #include "../include/Time.h"
@@ -13,6 +14,7 @@
 #include "../include/Util.h"
 #include "../include/Process.h"
 #include "../include/bst.h"
+#include "../include/myvector.h"
 
 int main()
 {
@@ -32,10 +34,13 @@ int main()
     // t3 = t1 - t2;
     // t3.displayTime();
 
-    runThreads();
+    // runThreads();
 
     // std::vector<Process> proc;
     // runCommand(Util::getPsCommand(), "r", proc);
+
+    // MyVector<Process> proc_test;
+    // runCommand(Util::getPsCommand(), "r", proc_test);
 
     // Process::sortProcess(proc);
     // puts("-----------------");
@@ -101,6 +106,30 @@ int main()
     //         break;
     //     }
     // }
+
+    // BST main_proc_bst(proc);
+    // main_proc_bst.printBST();
+
+
+
+    //// CUSTOM VECTOR TEST /////
+
+    MyVector<int> temp;
+    for (int i=0;i<10;i++){
+        temp.push_back(rand());
+    }
+
+    for (int x : temp)
+        printf("%d ", x % 100);
+
+    puts("");
+
+    std::sort(temp.begin(),temp.end());
+    for (int x : temp)
+        printf("%d ", x % 100);
+
+    puts("");
+
 
     return 0;
 }
