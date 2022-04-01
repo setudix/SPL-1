@@ -10,6 +10,8 @@
 // setting the idle time
 #define IDLETIME 5
 
+#define IDLETIME_LOG_PATH "../logs/total_idletime.txt"
+
 bool is_idle = 0;
 int start;
 int idle_time_start;
@@ -25,12 +27,14 @@ void setStartTime()
 
 void getIdleTime(Time IdleTimeStart, Time &IdleTime)
 {
-    Time *ct;
+    Time *ct = new Time;
+
     while (is_idle)
     {
-        Time ct(runCommand(Util::getCurrentTimeCommand(), "r"));
-        IdleTime = ct - IdleTimeStart;
+        ct->setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
+        IdleTime = *ct - IdleTimeStart;
     }
+    delete ct;
 }
 
 void elapsedTime()
@@ -57,6 +61,11 @@ void elapsedTime()
         }
     }
 }
+
+// void write_idletime(Time &IdleTime)
+// {
+//     FILE *idletime_file = fopen
+// }
 
 #endif
 

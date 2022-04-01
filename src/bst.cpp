@@ -4,7 +4,7 @@ BST::BST()
 {
     root = NULL;
 }
-BST::BST(std::vector<Process> &proc)
+BST::BST(MyVector<Process> &proc)
 {
     BST();
     root = NULL;

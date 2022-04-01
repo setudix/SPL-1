@@ -4,7 +4,7 @@
 #include <string>
 #include <cstdio>
 #include <vector>
-
+#include "myvector.h"
 #include "Time.h"
 
 class Process
@@ -26,7 +26,7 @@ public:
     Process(std::string str, Time current_time);
     Process(std::string str);
     void setProcess(std::string str);
-    static void displayProcess(std::vector<Process> &proc);
+    static void displayProcess(MyVector<Process> &proc);
     void displayProcess();
     Time getTime() const;
     void setTime(Time a);
@@ -35,8 +35,8 @@ public:
     std::string getProcessName() const;
     Time getRunningFor(Time a);
     Time getActiveTime() const;
-    static void sortProcess(std::vector<Process> &proc);
-    static void sortProcessByActiveTime(std::vector<Process> &proc);
+    static void sortProcess(MyVector<Process> &proc);
+    static void sortProcessByActiveTime(MyVector<Process> &proc);
     void displayProcessWithActiveTime();
     void killProcess();
     bool getHasBeenClosed();
@@ -48,4 +48,8 @@ std::vector<Process> getUniqueProcessForUser(std::vector<Process> &proc, std::st
 bool operator==(const Process &a, const Process &b);
 bool operator<(const Process &a, const Process &b);
 bool operator>(const Process &a, const Process &b);
+bool operator<=(const Process &a, const Process &b);
+bool operator!=(const Process &a, const Process &b);
+bool operator>=(const Process &a, const Process &b);
+
 #endif

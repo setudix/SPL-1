@@ -2,6 +2,7 @@
 #define BST_H
 
 #include "Process.h"
+#include "myvector.h"
 
 struct BST_Node
 {
@@ -21,7 +22,7 @@ private:
     void printBST(BST_Node* cur);
 public:
     BST();
-    BST(std::vector<Process> &proc);
+    BST(MyVector<Process> &proc);
     void insert(Process &x);
     void search(std::string name);
     void printBST();

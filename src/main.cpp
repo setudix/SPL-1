@@ -15,57 +15,43 @@
 #include "../include/Process.h"
 #include "../include/bst.h"
 #include "../include/myvector.h"
+#include "../include/mysort.h"
 
 int main()
 {
     std::string uptime = runCommand(Util::getUptimeCommand(), "r");
     std::string current_time = runCommand(Util::getCurrentTimeCommand(), "r");
 
-    // printf("uptime\n");
-    // printf("from system command : %s\n, my parsed output : %s\n",uptime.c_str(),)
-    // // Time t1(uptime);
-    // Time t2(current_time);
-
-    // t1.displayTime();
-    // t2.displayTime();
-
-    // Time t3 = t1 + t2;
-    // t3.displayTime();
-    // t3 = t1 - t2;
-    // t3.displayTime();
 
     // runThreads();
 
     // std::vector<Process> proc;
     // runCommand(Util::getPsCommand(), "r", proc);
 
-    // MyVector<Process> proc_test;
-    // runCommand(Util::getPsCommand(), "r", proc_test);
-
-    // Process::sortProcess(proc);
-    // puts("-----------------");
-    // Time ct = runCommand(Util::getCurrentTimeCommand(), "r");
-    int cnt = 0;
-    // for (auto x : proc)
+    MyVector<Process> proc_test;
+    runCommand(Util::getPsCommand(), "r", proc_test);
+    // quicksort<Process>(proc_test);
+    // for (int i=0;i<(int)proc_test.size();i++)
     // {
-    //     printf("%d. ", ++cnt);
-    //     x.displayProcess();
-    //     Time t = x.getRunningFor(current_time);
-    //     printf(" running for ");
-    //     t.displayTime();
+    //     proc_test[i].displayProcessWithActiveTime();
     //     puts("");
     // }
 
-    // std::vector<Process> unique_proc;
-    // unique_proc = getUniqueProcessForUser(proc, runCommand("whoami", "r"));
-    // Process::sortProcessByActiveTime(unique_proc);
-    // cnt = 0;
-    // // for (auto x : unique_proc)
-    // {
-    //     printf("%d. ", ++cnt);
-    //     x.displayProcessWithActiveTime();
-    //     puts("");
-    // }
+    for (auto x : proc_test)
+    {
+        x.displayProcessWithActiveTime();
+        puts("");
+    }
+    
+    puts("---------------------------------------");
+    Process::sortProcessByActiveTime(proc_test);
+
+    for (auto x : proc_test)
+    {
+        x.displayProcessWithActiveTime();
+        puts("");
+    }
+    
 
     // BST bst_test(unique_proc);
     // while (1)
@@ -112,23 +98,6 @@ int main()
 
 
 
-    //// CUSTOM VECTOR TEST /////
-
-    MyVector<int> temp;
-    for (int i=0;i<10;i++){
-        temp.push_back(rand());
-    }
-
-    for (int x : temp)
-        printf("%d ", x % 100);
-
-    puts("");
-
-    std::sort(temp.begin(),temp.end());
-    for (int x : temp)
-        printf("%d ", x % 100);
-
-    puts("");
 
 
     return 0;

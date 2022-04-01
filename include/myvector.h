@@ -16,7 +16,7 @@ public:
     MyVector(const MyVector<T> &x);
     ~MyVector();
     unsigned int size();
-    unsigned int size() const;
+    unsigned int size() const;  
     bool empty();
     bool empty() const;
     void push_back(const T &x);
@@ -27,6 +27,8 @@ public:
     T& operator[](int idx);
     const T& operator[](int idx) const;
     MyVector<T>& operator=(const MyVector<T> &x);
+    T* vector_array_ptr();
+    const T* vector_array_ptr() const;
 
 public:
     class iterator;
@@ -178,6 +180,19 @@ MyVector<T> &MyVector<T>::operator=(const MyVector<T> &x)
 
     return *this;
 }
+
+template <typename T>
+T* MyVector<T>::vector_array_ptr()
+{
+    return items;
+}
+
+template <typename T>
+const T* MyVector<T>::vector_array_ptr() const 
+{
+    return items;
+}
+
 template <typename T>
 class MyVector<T>::iterator
 {

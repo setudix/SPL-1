@@ -1,6 +1,8 @@
 #include "../include/Process.h"
 #include <cstdio>
 #include <algorithm>
+#include "../include/mysort.h"
+
 #define TMPSIZE 64
 
 Process::Process()
@@ -81,7 +83,7 @@ void Process::displayProcess()
            pid, ppid, lstart.c_str(), comm.c_str());
 }
 
-void Process::displayProcess(std::vector<Process> &proc)
+void Process::displayProcess(MyVector<Process> &proc)
 {
     for (auto i : proc)
     {
@@ -119,10 +121,12 @@ Time Process::getActiveTime() const
 {
     return active_time;
 }
-void Process::sortProcess(std::vector<Process> &proc)
+void Process::sortProcess(MyVector<Process> &proc)
 {
-    std::sort(proc.begin(), proc.end(), [](const Process &a, const Process &b)
-              { return a < b; });
+    quicksort<Process>(proc,[](Process &a, Process &b)
+    {
+        return a <= b;
+    });
 }
 
 std::vector<Process> getUniqueProcessForUser(std::vector<Process> &proc, std::string user)
@@ -151,10 +155,12 @@ std::vector<Process> getUniqueProcessForUser(std::vector<Process> &proc, std::st
     return a;
 }
 
-void Process::sortProcessByActiveTime(std::vector<Process> &proc)
+void Process::sortProcessByActiveTime(MyVector<Process> &proc)
 {
-    sort(proc.begin(), proc.end(), [](const Process &a, const Process &b)
-         { return !(a.getActiveTime() < b.getActiveTime()); });
+    quicksort<Process>(proc,[](Process &a, Process &b)
+    {
+        return a >= b;
+    });
 }
 
 void Process::displayProcessWithActiveTime()
@@ -201,4 +207,35 @@ bool operator<(const Process &a, const Process &b)
 bool operator>(const Process &a, const Process &b)
 {
     return !(a < b);
+}
+
+bool operator<=(const Process &a, const Process &b)
+{
+    if (a.getProcessName() == b.getProcessName())
+    {
+        return a.getTime() <= b.getTime();
+    }
+
+    return a.getProcessName() <= b.getProcessName();
+
+}
+
+bool operator!=(const Process &a, const Process &b)
+{
+    if (a.getProcessName() == b.getProcessName())
+    {
+        return a.getTime() != b.getTime();
+    }
+
+    return 1;
+}
+
+bool operator>=(const Process &a, const Process &b)
+{
+    if (a.getProcessName() == b.getProcessName())
+    {
+        return a.getTime() >= b.getTime();
+    }
+
+    return a.getProcessName() >= b.getProcessName();
 }

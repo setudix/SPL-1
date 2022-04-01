@@ -30,19 +30,25 @@ void checkKeyboardButtonPress()
 {
     input keyboard;
     int fd = open(KEYBOARD_PATH, O_RDONLY);
+    bool ignore_this_keypress = 0;
     while (1)
     {
         if (read(fd, &keyboard, sizeof keyboard))
         {
             if (keyboard.type == 1) // EV.KEY is 1
-            {
+            {   
+                if (ignore_this_keypress)
+                {
+                    ignore_this_keypress = 0;
+                    continue;
+                }
                 is_idle = 0;
                 start = clock();
                 InactivityStart.setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
-                // fflush(stdout);
-                // printf("%d.Key press!\n", ++cnt);
-                key_press_cnt[keyboard.code]++;
 
+                key_press_cnt[keyboard.code]++;
+                ignore_this_keypress = 1;
+                
                 printf("%s = %d\n", key_codes[keyboard.code].c_str(), key_press_cnt[keyboard.code]);
                 fflush(stdin);
             }

@@ -139,6 +139,20 @@ bool operator>(const Time &a, const Time &b)
 {
 	return a.getTimeInSeconds() > b.getTimeInSeconds();
 }
+
+bool operator<=(const Time &a, const Time &b)
+{
+	return a.getTimeInSeconds() <= b.getTimeInSeconds();
+}
+
+bool operator!=(const Time &a, const Time &b)
+{
+	return a.getTimeInSeconds() != b.getTimeInSeconds();
+}
+bool operator>=(const Time &a, const Time &b)
+{
+	return a.getTimeInSeconds() >= b.getTimeInSeconds();
+}
 Time Time::getCurrentTime()
 {
 	Time a(runCommand(Util::getCurrentTimeCommand(), "r"));
