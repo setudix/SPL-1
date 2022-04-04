@@ -15,7 +15,7 @@ Process::Process(std::string str)
 Process::Process(std::string str, Time current_time)
 {
     setProcess(str);
-    active_time = start_time - current_time;
+    last_active = current_time;
 }
 void Process::setProcess(std::string str)
 {
@@ -117,8 +117,9 @@ Time Process::getRunningFor(Time a)
 {
     return a - start_time;
 }
-Time Process::getActiveTime() const
+Time Process::getActiveTime()
 {
+    active_time = last_active - start_time;
     return active_time;
 }
 void Process::sortProcess(MyVector<Process> &proc)
@@ -166,7 +167,7 @@ void Process::sortProcessByActiveTime(MyVector<Process> &proc)
 void Process::displayProcessWithActiveTime()
 {
     displayProcess();
-    printf(" Running for : ");
+    printf(" Active for : ");
     getActiveTime().displayTime();
 }
 
@@ -239,3 +240,13 @@ bool operator>=(const Process &a, const Process &b)
 
     return a.getProcessName() >= b.getProcessName();
 }
+void Process::setLastActiveTime(Time a)
+{
+    last_active = a;
+}
+
+Time Process::getLastActiveTime()
+{
+    return last_active;
+}
+

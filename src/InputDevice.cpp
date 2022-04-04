@@ -43,7 +43,6 @@ void checkKeyboardButtonPress()
                     continue;
                 }
                 is_idle = 0;
-                start = clock();
                 InactivityStart.setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
 
                 key_press_cnt[keyboard.code]++;
@@ -53,7 +52,7 @@ void checkKeyboardButtonPress()
                 fflush(stdin);
             }
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
 }
 

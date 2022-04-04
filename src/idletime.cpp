@@ -2,6 +2,7 @@
 #include <thread>
 #include <time.h>
 #include <mutex>
+#include <fstream>
 
 #include "../include/Time.h"
 #include "../include/commands.h"
@@ -10,7 +11,7 @@
 // setting the idle time
 #define IDLETIME 5
 
-#define IDLETIME_LOG_PATH "../logs/total_idletime.txt"
+#define IDLETIME_DIR_PATH "../logs/idletime/"
 
 bool is_idle = 0;
 int start;
@@ -25,7 +26,7 @@ void setStartTime()
 }
 #ifdef TEST
 
-void getIdleTime(Time IdleTimeStart, Time &IdleTime)
+void getIdleTime(Time &IdleTimeStart, Time &IdleTime)
 {
     Time *ct = new Time;
 
@@ -36,36 +37,73 @@ void getIdleTime(Time IdleTimeStart, Time &IdleTime)
     }
     delete ct;
 }
+void write_idletime(Time &IdleTime)
+{
+    std::fstream file;
+    std::string filename =  runCommand("pwd", "r") + "/logs/idletime/" + \ 
+                         runCommand(Util::getDateIn_YYYY_DD_MM(),"r") + ".dat";
+    // std::string filename = runCommand("pwd","r");
+    // filename += "/logs/idletime/f.txt";
+
+    printf("%s\n",filename.c_str());
+
+    file.open(filename, std::ios::in);
+
+    if (file.is_open())
+    {
+        long long time;
+        file >> time;
+        
+        time += IdleTime.getTimeInSeconds();
+        file.close();
+        file.open(filename, std::ios::out);
+        file << time;
+
+        file.close(); 
+    }
+    else 
+    {
+        std::fstream newfile;
+        newfile.open(filename, std::ios::out);
+        if (!newfile.is_open())
+            puts("new file is not created");
+        newfile << IdleTime.getTimeInSeconds();
+        newfile.close();
+    }
+
+}
 
 void elapsedTime()
 {
+    Time ct;
+    Time diff;
     while (1)
     {
-        Time ct(runCommand(Util::getCurrentTimeCommand(), "r"));
-        Time diff = ct - InactivityStart;
+        ct.setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
+        diff = ct - InactivityStart;
         if (diff.getTimeInSeconds() > IDLETIME)
         {
             printf("IDLE\n");
-            Time IdleTimeStart(runCommand(Util::getCurrentTimeCommand(), "r"));
-            is_idle = 1;
+            Time *IdleTimeStart = new Time;
             Time *IdleTime = new Time;
-            getIdleTime(IdleTimeStart, *IdleTime);
+            IdleTimeStart->setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
+            is_idle = 1;
+
+            getIdleTime(*IdleTimeStart, *IdleTime);
 
             if (IdleTime->getTimeInSeconds() > 0)
             {
-                printf("Idle for :");
-                IdleTime->displayTime();
-                puts("");
+                // printf("Idle for :");
+                // IdleTime->displayTime();
+                // puts("");
+                write_idletime(*IdleTime);
             }
             delete IdleTime;
+            delete IdleTimeStart;
         }
     }
 }
 
-// void write_idletime(Time &IdleTime)
-// {
-//     FILE *idletime_file = fopen
-// }
 
 #endif
 

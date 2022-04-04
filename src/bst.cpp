@@ -122,3 +122,52 @@ void BST::printBST(BST_Node *cur)
     puts("");
     printBST(cur->right);
 }
+
+void BST::update(BST &x)
+{
+    add_new_nodes(x.root);
+    // check_stopped_processes();
+}
+
+void BST::updateTime(BST_Node *cur, Process &x)
+{   
+    if (cur->data.getProcessName() == x.getProcessName())
+    {
+        cur->data.setLastActiveTime(x.getLastActiveTime());
+        return;
+    }
+    if (cur->data < x)
+    {
+        if (cur->right == NULL)
+        {
+            cur->right = new_node(x);
+            return;
+        }
+        else
+        {
+            updateTime(cur->right,x);
+        }
+    }
+    else
+    {
+        if (cur->left == NULL)
+        {
+            cur->left = new_node(x);
+            return;
+        }
+        else
+        {
+            updateTime(cur->left, x);
+        }
+    }
+}
+void BST::add_new_nodes(BST_Node* cur)
+{
+    if (cur == NULL)
+        return;
+    
+    add_new_nodes(cur->left);
+    this->updateTime(this->root,cur->data);
+    add_new_nodes(cur->right);
+
+}

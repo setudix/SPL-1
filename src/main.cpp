@@ -16,14 +16,14 @@
 #include "../include/bst.h"
 #include "../include/myvector.h"
 #include "../include/mysort.h"
+#include "../include/process_management.h"
 
 int main()
 {
     std::string uptime = runCommand(Util::getUptimeCommand(), "r");
     std::string current_time = runCommand(Util::getCurrentTimeCommand(), "r");
 
-
-    // runThreads();
+    //runThreads();
 
     // std::vector<Process> proc;
     // runCommand(Util::getPsCommand(), "r", proc);
@@ -37,20 +37,20 @@ int main()
     //     puts("");
     // }
 
-    for (auto x : proc_test)
-    {
-        x.displayProcessWithActiveTime();
-        puts("");
-    }
+    // for (auto x : proc_test)
+    // {
+    //     x.displayProcessWithActiveTime();
+    //     puts("");
+    // }
     
-    puts("---------------------------------------");
-    Process::sortProcessByActiveTime(proc_test);
+    // puts("---------------------------------------");
+    // Process::sortProcessByActiveTime(proc_test);
 
-    for (auto x : proc_test)
-    {
-        x.displayProcessWithActiveTime();
-        puts("");
-    }
+    // for (auto x : proc_test)
+    // {
+    //     x.displayProcessWithActiveTime();
+    //     puts("");
+    // }
     
 
     // BST bst_test(unique_proc);
@@ -96,9 +96,13 @@ int main()
     // BST main_proc_bst(proc);
     // main_proc_bst.printBST();
 
+    // MyVector<Process> *procptr = new MyVector<Process>;
+    // runCommand(Util::getPsCommand(),"r",*procptr);
+    // BST *temp_bst = new BST(*procptr);
+    // delete procptr;
+    // temp_bst->printBST();
 
-
-
+    runProcessThread();
 
     return 0;
 }
