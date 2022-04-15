@@ -26,22 +26,16 @@
 extern int start;
 int cnt = 0;
 int key_press_cnt[KEY_CODE_SIZE];
-std::string keyboard_path;
-std::string mouse_path; 
-
-void setKeyboardPath()
-{
-    std::string temp_keyboard_path = (std::string) "echo ";
-    temp_keyboard_path += (std::string) INPUT_DEVICE_PATH;
-    temp_keyboard_path += (std::string) "*event-kbd";
-    keyboard_path = runCommand(temp_keyboard_path, "r");
-    printf("%s \n", keyboard_path.c_str());
-}
+const char* keyboard_path;
+const char* mouse_path; 
 
 void checkKeyboardButtonPress()
 {
+    std::string temp_keyb_path = runCommand(Util::getKeyboardPath(),"r");
+    keyboard_path = temp_keyb_path.c_str();
+    int fd = open(keyboard_path, O_RDONLY);
+
     input keyboard;
-    int fd = open(KEYBOARD_PATH, O_RDONLY);
     bool ignore_this_keypress = 0;
     while (1)
     {
@@ -70,10 +64,13 @@ void checkKeyboardButtonPress()
 
 void checkMouseActivity()
 {
+    std::string temp_mouse_path = runCommand(Util::getMousePath(),"r");
+    mouse_path = temp_mouse_path.c_str();
+    int fd = open(mouse_path, O_RDONLY);
+
     input mouse;
-    int fd = open(MOUSE_PATH, O_RDONLY);
-    while (1)
-    {
+    while (1){
+    
         if (read(fd, &mouse, sizeof mouse))
         {
             if (mouse.type == 1 || mouse.type == 2)
@@ -81,8 +78,6 @@ void checkMouseActivity()
                 is_idle = 0;
                 start = clock();
                 InactivityStart.setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
-                // fflush(stdout);
-                // printf("%d.Mouse Activity!\n", ++cnt);
             }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
@@ -94,10 +89,6 @@ void runThreads()
     std::thread keyboard_thread(checkKeyboardButtonPress);
     std::thread mouse_thread(checkMouseActivity);
     std::thread idle_time_thread(elapsedTime);
-
-    // keyboard_thread.detach();
-    // mouse_thread.detach();
-    // idle_time_thread.detach();
 
     keyboard_thread.join();
     mouse_thread.join();

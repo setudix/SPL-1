@@ -18,3 +18,12 @@ std::string Util::getDateIn_YYYY_DD_MM()
 {
     return "date +%F";
 }
+std::string Util::getKeyboardPath()
+{
+    return "echo /dev/input/by-path/*event-kbd";
+}
+
+std::string Util::getMousePath()
+{
+    return "echo /dev/input/by-path/*event-mouse";
+}

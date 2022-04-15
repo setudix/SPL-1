@@ -92,10 +92,10 @@ void elapsedTime()
 
             if (IdleTime->getTimeInSeconds() > 0)
             {
-                // printf("Idle for :");
-                // IdleTime->displayTime();
-                // puts("");
-                // write_idletime(*IdleTime);
+                printf("Idle for :");
+                IdleTime->displayTime();
+                puts("");
+                // // write_idletime(*IdleTime);
             }
             delete IdleTime;
             delete IdleTimeStart;
