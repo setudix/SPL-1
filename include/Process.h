@@ -44,6 +44,7 @@ public:
     void setHasBeenClosed(bool x);
     void setLastActiveTime(Time a);
     Time getLastActiveTime();
+    Process& operator=(const Process &x);
 
 };
 

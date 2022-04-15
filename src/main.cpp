@@ -23,7 +23,7 @@ int main()
     std::string uptime = runCommand(Util::getUptimeCommand(), "r");
     std::string current_time = runCommand(Util::getCurrentTimeCommand(), "r");
 
-    //runThreads();
+    // runThreads();
 
     // std::vector<Process> proc;
     // runCommand(Util::getPsCommand(), "r", proc);
@@ -93,7 +93,7 @@ int main()
     //     }
     // }
 
-    // BST main_proc_bst(proc);
+    // BST main_proc_bst(proc_test);
     // main_proc_bst.printBST();
 
     // MyVector<Process> *procptr = new MyVector<Process>;

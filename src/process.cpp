@@ -68,13 +68,9 @@ std::string Process::getMonth(std::string month)
 std::string Process::getDay(int day)
 {
     if (!(day / 10))
-    {
         return '0' + std::to_string(day);
-    }
     else
-    {
         return std::to_string(day);
-    }
 }
 
 void Process::displayProcess()
@@ -141,16 +137,10 @@ std::vector<Process> getUniqueProcessForUser(std::vector<Process> &proc, std::st
             Process temp = a.back();
 
             if (temp.getProcessName() == x.getProcessName())
-            {
                 if (x.getTime() < temp.getTime())
-                {
                     temp.setTime(x.getTime());
-                }
-            }
             else
-            {
                 a.push_back({x});
-            }
         }
     }
     return a;
@@ -158,8 +148,7 @@ std::vector<Process> getUniqueProcessForUser(std::vector<Process> &proc, std::st
 
 void Process::sortProcessByActiveTime(MyVector<Process> &proc)
 {
-    quicksort<Process>(proc,[](Process &a, Process &b)
-    {
+    quicksort<Process>(proc,[](Process &a, Process &b){
         return a >= b;
     });
 }
@@ -189,18 +178,14 @@ void Process::setHasBeenClosed(bool x)
 bool operator==(const Process &a, const Process &b)
 {
     if (a.getProcessName() == b.getProcessName())
-    {
         return a.getTime() == b.getTime();
-    }
 
     return 0;
 }
 bool operator<(const Process &a, const Process &b)
 {
     if (a.getProcessName() == b.getProcessName())
-    {
         return a.getTime() < b.getTime();
-    }
 
     return a.getProcessName() < b.getProcessName();
 }
@@ -213,9 +198,7 @@ bool operator>(const Process &a, const Process &b)
 bool operator<=(const Process &a, const Process &b)
 {
     if (a.getProcessName() == b.getProcessName())
-    {
         return a.getTime() <= b.getTime();
-    }
 
     return a.getProcessName() <= b.getProcessName();
 
@@ -224,9 +207,7 @@ bool operator<=(const Process &a, const Process &b)
 bool operator!=(const Process &a, const Process &b)
 {
     if (a.getProcessName() == b.getProcessName())
-    {
         return a.getTime() != b.getTime();
-    }
 
     return 1;
 }
@@ -234,15 +215,13 @@ bool operator!=(const Process &a, const Process &b)
 bool operator>=(const Process &a, const Process &b)
 {
     if (a.getProcessName() == b.getProcessName())
-    {
         return a.getTime() >= b.getTime();
-    }
 
     return a.getProcessName() >= b.getProcessName();
 }
-void Process::setLastActiveTime(Time a)
+void Process::setLastActiveTime(Time last_active)
 {
-    last_active = a;
+    this->last_active = last_active;
 }
 
 Time Process::getLastActiveTime()
@@ -250,3 +229,17 @@ Time Process::getLastActiveTime()
     return last_active;
 }
 
+Process& Process::operator=(const Process &x)
+{
+    this->user = x.user;
+    this->pid = x.pid;
+    this->ppid = x.pid;
+    this->lstart = x.lstart;
+    this->comm = x.comm;
+    this->start_time = x.start_time;
+    this->active_time = x.active_time;
+    this->last_active = x.last_active;
+    this->hasBeenClosed = x.hasBeenClosed;
+
+    return *this;
+}

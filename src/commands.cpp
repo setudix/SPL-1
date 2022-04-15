@@ -15,9 +15,7 @@ std::string runCommand(std::string command, const char *mode)
     std::string res;
     FILE *pipe = popen((const char *)command.c_str(), mode);
     if (!pipe)
-    {
         throw std::runtime_error("popen() failed");
-    }
     try
     {
         while (fgets(buffer, sizeof buffer, pipe) != NULL)
@@ -43,9 +41,7 @@ void runCommand(std::string command, const char *mode, std::vector<Process> &pro
     Time ct = Time::getCurrentTime();
 
     if (!pipe)
-    {
         throw std::runtime_error("can't read ps command");
-    }
     try
     {
         // ignore the first line
@@ -74,9 +70,7 @@ void runCommand(std::string command, const char *mode, MyVector<Process> &proc)
     Time ct = Time::getCurrentTime();
 
     if (!pipe)
-    {
         throw std::runtime_error("can't read ps command");
-    }
     try
     {
         // ignore the first line

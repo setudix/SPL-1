@@ -108,7 +108,6 @@ Time operator+(Time &a, Time &b)
 {
 	long long temp = a.getTimeInSeconds() + b.getTimeInSeconds();
 
-	printf(" a = %lld\n b = %lld , c = %lld \n", a.getTimeInSeconds(), b.getTimeInSeconds(), temp);
 	Time c;
 	c.setTime(temp);
 

@@ -38,7 +38,25 @@ void checkProcess()
             delete temp;
         }
         puts("--------------------------------------");
-        root_BST->printBST();
+        // root_BST->printBST();
+        BST_Node* temp = root_BST->search("gedit");
+        if (temp != NULL)
+        {
+            // temp->data.displayProcess();
+            printf(" === ");
+            Time tempTime;
+            for (auto time : temp->process_sessions)
+            {
+                time.displayTime();
+                printf(" ");
+                tempTime = tempTime + time;
+            }
+            puts("");
+            printf("total = ");
+            tempTime.displayTime();
+            puts("");
+            
+        }
         puts("**************************************");
         Time a(runCommand(Util::getCurrentTimeCommand(),"r"));
         a.displayTime();
