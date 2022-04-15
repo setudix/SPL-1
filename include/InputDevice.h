@@ -9,7 +9,8 @@ struct input
     unsigned short code;
     signed int value;
 };
-
+void setKeyboardPath();
+void setMousePath();
 void checkIdleTime();
 void runThreads();
 

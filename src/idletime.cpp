@@ -40,8 +40,7 @@ void getIdleTime(Time &IdleTimeStart, Time &IdleTime)
 void write_idletime(Time &IdleTime)
 {
     std::fstream file;
-    std::string filename =  runCommand("pwd", "r") + "/logs/idletime/" + \ 
-                         runCommand(Util::getDateIn_YYYY_DD_MM(),"r") + ".dat";
+    std::string filename =  runCommand("pwd", "r") + "/logs/idletime/" + runCommand(Util::getDateIn_YYYY_DD_MM(),"r") + ".dat";
     // std::string filename = runCommand("pwd","r");
     // filename += "/logs/idletime/f.txt";
 
@@ -96,7 +95,7 @@ void elapsedTime()
                 // printf("Idle for :");
                 // IdleTime->displayTime();
                 // puts("");
-                write_idletime(*IdleTime);
+                // write_idletime(*IdleTime);
             }
             delete IdleTime;
             delete IdleTimeStart;

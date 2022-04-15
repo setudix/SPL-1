@@ -21,10 +21,22 @@
 // keyboard and mouse driver locations
 #define KEYBOARD_PATH "/dev/input/by-path/pci-0000:00:1d.0-usb-0:1.5:1.0-event-kbd"
 #define MOUSE_PATH "/dev/input/by-path/pci-0000:00:1d.0-usb-0:1.6:1.0-event-mouse"
+#define INPUT_DEVICE_PATH "/dev/input/by-path/"
 
 extern int start;
 int cnt = 0;
 int key_press_cnt[KEY_CODE_SIZE];
+std::string keyboard_path;
+std::string mouse_path; 
+
+void setKeyboardPath()
+{
+    std::string temp_keyboard_path = (std::string) "echo ";
+    temp_keyboard_path += (std::string) INPUT_DEVICE_PATH;
+    temp_keyboard_path += (std::string) "*event-kbd";
+    keyboard_path = runCommand(temp_keyboard_path, "r");
+    printf("%s \n", keyboard_path.c_str());
+}
 
 void checkKeyboardButtonPress()
 {
@@ -52,7 +64,7 @@ void checkKeyboardButtonPress()
                 fflush(stdin);
             }
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 }
 
