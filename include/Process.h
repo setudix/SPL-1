@@ -45,6 +45,8 @@ public:
     void setLastActiveTime(Time a);
     Time getLastActiveTime();
     Process& operator=(const Process &x);
+    int getPid();
+    int getPpid();
 
 };
 

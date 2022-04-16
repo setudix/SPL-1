@@ -169,3 +169,19 @@ void BST::check_stopped_processes(BST_Node *cur, BST &x)
         cur->stopped++;
     check_stopped_processes(cur->right, x);
 }
+
+MyVector<BST_Node*>* BST::getProcessList()
+{
+    MyVector<BST_Node*> *process_list = new MyVector<BST_Node*>;
+    getProcessList(root, *process_list);
+    return process_list;
+}
+
+void BST::getProcessList(BST_Node* cur, MyVector<BST_Node*> &process_list)
+{
+    if (cur == NULL)
+        return;
+    getProcessList(cur->left, process_list);
+    process_list.push_back(cur);
+    getProcessList(cur->right, process_list);
+}

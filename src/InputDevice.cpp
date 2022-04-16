@@ -83,14 +83,3 @@ void checkMouseActivity()
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 }
-
-void runThreads()
-{
-    std::thread keyboard_thread(checkKeyboardButtonPress);
-    std::thread mouse_thread(checkMouseActivity);
-    std::thread idle_time_thread(elapsedTime);
-
-    keyboard_thread.join();
-    mouse_thread.join();
-    idle_time_thread.join();
-}

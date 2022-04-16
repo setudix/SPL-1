@@ -243,3 +243,12 @@ Process& Process::operator=(const Process &x)
 
     return *this;
 }
+int Process::getPid()
+{
+    return pid;
+}
+
+int Process::getPpid()
+{
+    return ppid;
+}

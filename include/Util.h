@@ -13,6 +13,6 @@ public:
     static std::string getDateIn_YYYY_DD_MM();
     static std::string getKeyboardPath();
     static std::string getMousePath();
-
+    static std::string getPwdCommand();
 };
 #endif

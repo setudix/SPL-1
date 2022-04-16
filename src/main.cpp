@@ -23,86 +23,15 @@ int main()
     std::string uptime = runCommand(Util::getUptimeCommand(), "r");
     std::string current_time = runCommand(Util::getCurrentTimeCommand(), "r");
 
-    runThreads();
+    std::thread keyboard_thread(checkKeyboardButtonPress);
+    std::thread mouse_thread(checkMouseActivity);
+    std::thread idle_time_thread(elapsedTime);
+    std::thread process_management_thread(checkProcess);
 
-    // std::vector<Process> proc;
-    // runCommand(Util::getPsCommand(), "r", proc);
-
-    MyVector<Process> proc_test;
-    runCommand(Util::getPsCommand(), "r", proc_test);
-    // quicksort<Process>(proc_test);
-    // for (int i=0;i<(int)proc_test.size();i++)
-    // {
-    //     proc_test[i].displayProcessWithActiveTime();
-    //     puts("");
-    // }
-
-    // for (auto x : proc_test)
-    // {
-    //     x.displayProcessWithActiveTime();
-    //     puts("");
-    // }
-    
-    // puts("---------------------------------------");
-    // Process::sortProcessByActiveTime(proc_test);
-
-    // for (auto x : proc_test)
-    // {
-    //     x.displayProcessWithActiveTime();
-    //     puts("");
-    // }
-    
-
-    // BST bst_test(unique_proc);
-    // while (1)
-    // {
-    //     std::string x;
-    //     std::cin >> x;
-
-    //     bst_test.search(x);
-    // }
-    // std::pair<std::string, long long int> shouldKill({"firefox", 5});
-
-    // while (1)
-    // {
-
-    //     std::vector<Process> test;
-    //     runCommand(Util::getPsCommand(), "r", test);
-    //     Process::sortProcess(test);
-    //     std::vector<Process> test2;
-    //     test2 = getUniqueProcessForUser(test, runCommand("whoami", "r"));
-    //     bool killed = 0;
-    //     for (auto x : test2)
-    //     {
-    //         if (x.getProcessName() == shouldKill.first)
-    //         {
-    //             if (x.getActiveTime().getTimeInSeconds() > shouldKill.second)
-    //             {
-    //                 x.killProcess();
-    //                 killed = 1;
-    //             }
-    //         }
-    //         if (killed)
-    //             break;
-    //     }
-
-    //     if (killed)
-    //     {
-    //         printf("process %s has been killed\n", shouldKill.first.c_str());
-    //         break;
-    //     }
-    // }
-
-    // BST main_proc_bst(proc_test);
-    // main_proc_bst.printBST();
-
-    // MyVector<Process> *procptr = new MyVector<Process>;
-    // runCommand(Util::getPsCommand(),"r",*procptr);
-    // BST *temp_bst = new BST(*procptr);
-    // delete procptr;
-    // temp_bst->printBST();
-
-    // runProcessThread();
+    keyboard_thread.join();
+    mouse_thread.join();
+    idle_time_thread.join();
+    process_management_thread.join();
 
     return 0;
 }

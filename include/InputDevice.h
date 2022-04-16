@@ -11,9 +11,9 @@ struct input
 };
 void setKeyboardPath();
 void setMousePath();
-void checkIdleTime();
-void runThreads();
-
+void checkIdleTime();   
+void checkKeyboardButtonPress();
+void checkMouseActivity();
 extern bool is_idle;
 
 #endif

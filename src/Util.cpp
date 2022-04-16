@@ -27,3 +27,8 @@ std::string Util::getMousePath()
 {
     return "echo /dev/input/by-path/*event-mouse";
 }
+
+std::string Util::getPwdCommand()
+{
+    return "pwd";
+}

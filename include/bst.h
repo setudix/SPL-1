@@ -26,6 +26,7 @@ private:
     void add_new_nodes(BST_Node* cur);
     void updateTime(BST_Node* cur, Process &x);
     void check_stopped_processes(BST_Node* cur, BST &x);
+    void getProcessList(BST_Node *cur, MyVector<BST_Node*> &process_list);
 
 public:
     BST();
@@ -34,5 +35,6 @@ public:
     BST_Node* search(std::string name);
     void printBST();
     void update(BST &x);
+    MyVector<BST_Node*>* getProcessList();
 };
 #endif
