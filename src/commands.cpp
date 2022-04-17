@@ -9,7 +9,7 @@
 #define BUFFER_SIZE 256
 #define STR_SIZE 1024
 
-std::string runCommand(std::string command, const char *mode)
+std::string SPL::runCommand(std::string command, const char *mode)
 {
     char buffer[BUFFER_SIZE];
     std::string res;
@@ -34,7 +34,7 @@ std::string runCommand(std::string command, const char *mode)
     return res;
 }
 
-void runCommand(std::string command, const char *mode, std::vector<Process> &proc)
+void SPL::runCommand(std::string command, const char *mode, std::vector<SPL::Process> &proc)
 {
     char buffer[BUFFER_SIZE];
     FILE *pipe = popen((const char *)command.c_str(), mode);
@@ -63,7 +63,7 @@ void runCommand(std::string command, const char *mode, std::vector<Process> &pro
     pclose(pipe);
 }
 
-void runCommand(std::string command, const char *mode, MyVector<Process> &proc)
+void SPL::runCommand(std::string command, const char *mode, SPL::MyVector<SPL::Process> &proc)
 {
     char buffer[BUFFER_SIZE];
     FILE *pipe = popen((const char *)command.c_str(), mode);
@@ -81,7 +81,7 @@ void runCommand(std::string command, const char *mode, MyVector<Process> &proc)
         {
             temp = buffer;
             temp.pop_back();
-            Process proc_temp(temp, ct);
+            SPL::Process proc_temp(temp, ct);
             proc.push_back(proc_temp);
         }
     }

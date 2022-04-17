@@ -4,8 +4,9 @@
 #include "Time.h"
 
 extern bool is_idle;
-extern Time InactivityStart;
-
-void elapsedTime();
-
+extern SPL::Time InactivityStart;
+namespace SPL
+{
+    void elapsedTime();
+}
 #endif

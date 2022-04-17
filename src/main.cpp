@@ -20,13 +20,13 @@
 
 int main()
 {
-    std::string uptime = runCommand(Util::getUptimeCommand(), "r");
-    std::string current_time = runCommand(Util::getCurrentTimeCommand(), "r");
+    std::string uptime = SPL::runCommand(SPL::Util::getUptimeCommand(), "r");
+    std::string current_time = SPL::runCommand(SPL::Util::getCurrentTimeCommand(), "r");
 
-    std::thread keyboard_thread(checkKeyboardButtonPress);
-    std::thread mouse_thread(checkMouseActivity);
-    std::thread idle_time_thread(elapsedTime);
-    std::thread process_management_thread(checkProcess);
+    std::thread keyboard_thread(SPL::checkKeyboardButtonPress);
+    std::thread mouse_thread(SPL::checkMouseActivity);
+    std::thread idle_time_thread(SPL::elapsedTime);
+    std::thread process_management_thread(SPL::checkProcess);
 
     keyboard_thread.join();
     mouse_thread.join();

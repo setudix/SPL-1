@@ -17,30 +17,30 @@ bool is_idle = 0;
 int start;
 int idle_time_start;
 
-Time InactivityStart;
+SPL::Time InactivityStart;
 #define TEST 1
 
 void setStartTime()
 {
-    InactivityStart.setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
+    InactivityStart.setTime(SPL::runCommand(SPL::Util::getCurrentTimeCommand(), "r"));
 }
 #ifdef TEST
 
-void getIdleTime(Time &IdleTimeStart, Time &IdleTime)
+void getIdleTime(SPL::Time &IdleTimeStart, SPL::Time &IdleTime)
 {
-    Time *ct = new Time;
+    SPL::Time *ct = new SPL::Time;
 
     while (is_idle)
     {
-        ct->setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
+        ct->setTime(SPL::runCommand(SPL::Util::getCurrentTimeCommand(), "r"));
         IdleTime = *ct - IdleTimeStart;
     }
     delete ct;
 }
-void write_idletime(Time &IdleTime)
+void write_idletime(SPL::Time &IdleTime)
 {
     std::fstream file;
-    std::string filename =  runCommand("pwd", "r") + "/logs/idletime/" + runCommand(Util::getDateIn_YYYY_DD_MM(),"r") + ".dat";
+    std::string filename =  SPL::runCommand("pwd", "r") + "/logs/idletime/" + SPL::runCommand(SPL::Util::getDateIn_YYYY_DD_MM(),"r") + ".dat";
     // std::string filename = runCommand("pwd","r");
     // filename += "/logs/idletime/f.txt";
 
@@ -71,38 +71,39 @@ void write_idletime(Time &IdleTime)
     }
 
 }
-
-void elapsedTime()
+namespace SPL
 {
-    Time ct;
-    Time diff;
-    while (1)
+    void elapsedTime()
     {
-        ct.setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
-        diff = ct - InactivityStart;
-        if (diff.getTimeInSeconds() > IDLETIME)
+        SPL::Time ct;
+        SPL::Time diff;
+        while (1)
         {
-            printf("IDLE\n");
-            Time *IdleTimeStart = new Time;
-            Time *IdleTime = new Time;
-            IdleTimeStart->setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
-            is_idle = 1;
-
-            getIdleTime(*IdleTimeStart, *IdleTime);
-
-            if (IdleTime->getTimeInSeconds() > 0)
+            ct.setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
+            diff = ct - InactivityStart;
+            if (diff.getTimeInSeconds() > IDLETIME)
             {
-                printf("Idle for :");
-                IdleTime->displayTime();
-                puts("");
-                // // write_idletime(*IdleTime);
+                printf("IDLE\n");
+                SPL::Time *IdleTimeStart = new SPL::Time;
+                SPL::Time *IdleTime = new SPL::Time;
+                IdleTimeStart->setTime(SPL::runCommand(SPL::Util::getCurrentTimeCommand(), "r"));
+                is_idle = 1;
+
+                getIdleTime(*IdleTimeStart, *IdleTime);
+
+                if (IdleTime->getTimeInSeconds() > 0)
+                {
+                    printf("Idle for :");
+                    IdleTime->displayTime();
+                    puts("");
+                    // // write_idletime(*IdleTime);
+                }
+                delete IdleTime;
+                delete IdleTimeStart;
             }
-            delete IdleTime;
-            delete IdleTimeStart;
         }
     }
 }
-
 
 #endif
 

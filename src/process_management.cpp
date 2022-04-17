@@ -10,14 +10,15 @@
 #include "../include/bst.h"
 #include "../include/Util.h"
 #include "../include/Time.h"
+#include "../include/active_window.h"
 
 const std::string PROCESS_INFO_DIR = "/logs/processes/";
-BST* root_BST = NULL;
+SPL::BST* root_BST = NULL;
 
-void write_process_to_file(MyVector<BST_Node*> &process_list)
+void write_process_to_file(SPL::MyVector<SPL::BST_Node*> &process_list)
 {
     std::fstream file;
-    std::string filename = runCommand("pwd", "r") + PROCESS_INFO_DIR + runCommand(Util::getDateIn_YYYY_DD_MM(),"r") + ".dat"; 
+    std::string filename = SPL::runCommand("pwd", "r") + PROCESS_INFO_DIR + SPL::runCommand(SPL::Util::getDateIn_YYYY_DD_MM(),"r") + ".dat"; 
 
     file.open(filename, std::ios::out);
 
@@ -28,9 +29,9 @@ void write_process_to_file(MyVector<BST_Node*> &process_list)
         int ppid;
         std::string comm;
         int total_sessions;
-        Time total_time;
+        SPL::Time total_time;
 
-        for (BST_Node *process_info_node : process_list)
+        for (SPL::BST_Node *process_info_node : process_list)
         {
             user = process_info_node->data.getUser();
             pid = process_info_node->data.getPid();
@@ -41,7 +42,7 @@ void write_process_to_file(MyVector<BST_Node*> &process_list)
 
             file << user << " " << pid << " " << ppid << " " << comm << " " << total_sessions << " ";
 
-            for (Time x: process_info_node->process_sessions)
+            for (SPL::Time x: process_info_node->process_sessions)
             {
                 file << x.getTimeInSeconds() << " ";
                 total_time = total_time + x;
@@ -56,66 +57,69 @@ void write_process_to_file(MyVector<BST_Node*> &process_list)
         printf("can't open file for writing processes\n");
 }
 
-void write_process(BST &process_info)
+void write_process(SPL::BST &process_info)
 {
-    MyVector<BST_Node*> *process_list = process_info.getProcessList();
+    SPL::MyVector<SPL::BST_Node*> *process_list = process_info.getProcessList();
     write_process_to_file(*process_list);
 
     delete process_list;
 
 }
 
-BST* getProcessInfoBST()
+SPL::BST* getProcessInfoBST()
 {
-    MyVector<Process> *proc = new MyVector<Process>;
-    runCommand(Util::getPsCommand(),"r",*proc);
-    BST *temp = new BST(*proc);
+    SPL::MyVector<SPL::Process> *proc = new SPL::MyVector<SPL::Process>;
+    SPL::runCommand(SPL::Util::getPsCommand(),"r",*proc);
+    SPL::BST *temp = new SPL::BST(*proc);
     delete proc;
     return temp; 
 }
-
-void checkProcess()
+namespace SPL
 {
-    while (1)
+    void checkProcess()
     {
-        if (root_BST == NULL)
+        SPL::ActiveWindow activeWindow;
+        while (1)
         {
-            root_BST = getProcessInfoBST();
-            
-        }
-        else
-        {
-            BST *temp = getProcessInfoBST();
-            root_BST->update(*temp);
+            if (root_BST == NULL)
+            {
+                root_BST = getProcessInfoBST();
+            }
+            else
+            {
+                SPL::BST *temp = getProcessInfoBST();
+                root_BST->update(*temp);
 
-            delete temp;
-        }
-        // puts("--------------------------------------");
-        // // root_BST->printBST();
-        // BST_Node* temp = root_BST->search("gedit");
-        // if (temp != NULL)
-        // {
-        //     // temp->data.displayProcess();
-        //     printf(" === ");
-        //     Time tempTime;
-        //     for (auto time : temp->process_sessions)
-        //     {
-        //         time.displayTime();
-        //         printf(" ");
-        //         tempTime = tempTime + time;
-        //     }
-        //     puts("");
-        //     printf("total = ");
-        //     tempTime.displayTime();
-        //     puts("");
-            
-        // }
-        // puts("**************************************");
-        // Time a(runCommand(Util::getCurrentTimeCommand(),"r"));
-        // a.displayTime();
-        // puts("");
-        write_process(*root_BST);
+                delete temp;
+            }
+            puts("--------------------------------------");
+            // root_BST->printBST();
+            SPL::BST_Node *temp = root_BST->search(activeWindow.get_active_window_name());
+            if (temp != NULL)
+            {
+                // temp->data.displayProcess();
+                printf("%s\n", temp->data.getProcessName().c_str());
+                printf(" === ");
+                SPL::Time tempTime;
+                for (auto time : temp->process_sessions)
+                {
+                    time.displayTime();
+                    printf(" ");
+                    tempTime = tempTime + time;
+                }
+                puts("");
+                printf("total = ");
+                tempTime.displayTime();
+                puts("");
+            }
+            puts("**************************************");
+            SPL::Time a(SPL::runCommand(SPL::Util::getCurrentTimeCommand(), "r"));
+            a.displayTime();
+            puts("");
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+            write_process(*root_BST);
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        }
     }
 }

@@ -5,19 +5,19 @@
 
 #define TMPSIZE 64
 
-Process::Process()
+SPL::Process::Process()
 {
 }
-Process::Process(std::string str)
+SPL::Process::Process(std::string str)
 {
     setProcess(str);
 }
-Process::Process(std::string str, Time current_time)
+SPL::Process::Process(std::string str, Time current_time)
 {
     setProcess(str);
     last_active = current_time;
 }
-void Process::setProcess(std::string str)
+void SPL::Process::setProcess(std::string str)
 {
     char temp_user[TMPSIZE];
     char temp_month_name[TMPSIZE];
@@ -37,7 +37,7 @@ void Process::setProcess(std::string str)
     hasBeenClosed = 0;
 }
 
-std::string Process::getMonth(std::string month)
+std::string SPL::Process::getMonth(std::string month)
 {
     if (month == "Jan")
         return "01";
@@ -65,7 +65,7 @@ std::string Process::getMonth(std::string month)
     return "12";
 }
 
-std::string Process::getDay(int day)
+std::string SPL::Process::getDay(int day)
 {
     if (!(day / 10))
         return '0' + std::to_string(day);
@@ -73,13 +73,13 @@ std::string Process::getDay(int day)
         return std::to_string(day);
 }
 
-void Process::displayProcess()
+void SPL::Process::displayProcess()
 {
     printf("%-7s %-10d %-10d %20s %40s", user.c_str(),
            pid, ppid, lstart.c_str(), comm.c_str());
 }
 
-void Process::displayProcess(MyVector<Process> &proc)
+void SPL::Process::displayProcess(SPL::MyVector<SPL::Process> &proc)
 {
     for (auto i : proc)
     {
@@ -88,53 +88,53 @@ void Process::displayProcess(MyVector<Process> &proc)
     }
 }
 
-std::string Process::getProcessName() const
+std::string SPL::Process::getProcessName() const
 {
     return comm;
 }
-Time Process::getTime() const
+SPL::Time SPL::Process::getTime() const
 {
     return start_time;
 }
 
-void Process::setTime(Time a)
+void SPL::Process::setTime(SPL::Time a)
 {
     start_time = a;
 }
-std::string Process::getUser()
+std::string SPL::Process::getUser()
 {
     return user;
 }
-Time Process::getTime()
+SPL::Time SPL::Process::getTime()
 {
     return start_time;
 }
-Time Process::getRunningFor(Time a)
+SPL::Time SPL::Process::getRunningFor(SPL::Time a)
 {
     return a - start_time;
 }
-Time Process::getActiveTime()
+SPL::Time SPL::Process::getActiveTime()
 {
     active_time = last_active - start_time;
     return active_time;
 }
-void Process::sortProcess(MyVector<Process> &proc)
+void SPL::Process::sortProcess(SPL::MyVector<SPL::Process> &proc)
 {
-    quicksort<Process>(proc,[](Process &a, Process &b)
+    SPL::quicksort<SPL::Process>(proc,[](SPL::Process &a, SPL::Process &b)
     {
         return a <= b;
     });
 }
 
-std::vector<Process> getUniqueProcessForUser(std::vector<Process> &proc, std::string user)
+std::vector<SPL::Process> getUniqueProcessForUser(std::vector<SPL::Process> &proc, std::string user)
 {
-    std::vector<Process> a;
+    std::vector<SPL::Process> a;
     a.push_back({proc[0]});
     for (auto x : proc)
     {
         if (x.getUser() == user)
         {
-            Process temp = a.back();
+            SPL::Process temp = a.back();
 
             if (temp.getProcessName() == x.getProcessName())
                 if (x.getTime() < temp.getTime())
@@ -146,43 +146,43 @@ std::vector<Process> getUniqueProcessForUser(std::vector<Process> &proc, std::st
     return a;
 }
 
-void Process::sortProcessByActiveTime(MyVector<Process> &proc)
+void SPL::Process::sortProcessByActiveTime(SPL::MyVector<SPL::Process> &proc)
 {
-    quicksort<Process>(proc,[](Process &a, Process &b){
+    quicksort<SPL::Process>(proc,[](SPL::Process &a, SPL::Process &b){
         return a >= b;
     });
 }
 
-void Process::displayProcessWithActiveTime()
+void SPL::Process::displayProcessWithActiveTime()
 {
     displayProcess();
     printf(" Active for : ");
     getActiveTime().displayTime();
 }
 
-void Process::killProcess()
+void SPL::Process::killProcess()
 {
     // not final
     std::string command = "kill " + std::to_string(pid);
     system((const char *)command.c_str());
 }
-bool Process::getHasBeenClosed()
+bool SPL::Process::getHasBeenClosed()
 {
     return hasBeenClosed;
 }
 
-void Process::setHasBeenClosed(bool x)
+void SPL::Process::setHasBeenClosed(bool x)
 {
     hasBeenClosed = x;
 }
-bool operator==(const Process &a, const Process &b)
+bool operator==(const SPL::Process &a, const SPL::Process &b)
 {
     if (a.getProcessName() == b.getProcessName())
         return a.getTime() == b.getTime();
 
     return 0;
 }
-bool operator<(const Process &a, const Process &b)
+bool operator<(const SPL::Process &a, const SPL::Process &b)
 {
     if (a.getProcessName() == b.getProcessName())
         return a.getTime() < b.getTime();
@@ -190,12 +190,12 @@ bool operator<(const Process &a, const Process &b)
     return a.getProcessName() < b.getProcessName();
 }
 
-bool operator>(const Process &a, const Process &b)
+bool operator>(const SPL::Process &a, const SPL::Process &b)
 {
     return !(a < b);
 }
 
-bool operator<=(const Process &a, const Process &b)
+bool operator<=(const SPL::Process &a, const SPL::Process &b)
 {
     if (a.getProcessName() == b.getProcessName())
         return a.getTime() <= b.getTime();
@@ -204,7 +204,7 @@ bool operator<=(const Process &a, const Process &b)
 
 }
 
-bool operator!=(const Process &a, const Process &b)
+bool operator!=(const SPL::Process &a, const SPL::Process &b)
 {
     if (a.getProcessName() == b.getProcessName())
         return a.getTime() != b.getTime();
@@ -212,24 +212,24 @@ bool operator!=(const Process &a, const Process &b)
     return 1;
 }
 
-bool operator>=(const Process &a, const Process &b)
+bool operator>=(const SPL::Process &a, const SPL::Process &b)
 {
     if (a.getProcessName() == b.getProcessName())
         return a.getTime() >= b.getTime();
 
     return a.getProcessName() >= b.getProcessName();
 }
-void Process::setLastActiveTime(Time last_active)
+void SPL::Process::setLastActiveTime(SPL::Time last_active)
 {
     this->last_active = last_active;
 }
 
-Time Process::getLastActiveTime()
+SPL::Time SPL::Process::getLastActiveTime()
 {
     return last_active;
 }
 
-Process& Process::operator=(const Process &x)
+SPL::Process& SPL::Process::operator=(const SPL::Process &x)
 {
     this->user = x.user;
     this->pid = x.pid;
@@ -243,12 +243,12 @@ Process& Process::operator=(const Process &x)
 
     return *this;
 }
-int Process::getPid()
+int SPL::Process::getPid()
 {
     return pid;
 }
 
-int Process::getPpid()
+int SPL::Process::getPpid()
 {
     return ppid;
 }

@@ -1,6 +1,8 @@
 #ifndef PROCESS_MANAGEMENT_H
 #define PROCESS_MANAGEMENT_H
 
-void checkProcess();
-
+namespace SPL
+{
+    void checkProcess();
+}
 #endif

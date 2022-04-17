@@ -7,7 +7,10 @@
 #include "Time.h"
 #include "myvector.h"
 
-std::string runCommand(std::string command, const char *mode);
-void runCommand(std::string command, const char *mode, std::vector<Process> &proc);
-void runCommand(std::string command, const char *mode, MyVector<Process> &proc);
+namespace SPL
+{
+    std::string runCommand(std::string command, const char *mode);
+    void runCommand(std::string command, const char *mode, std::vector<SPL::Process> &proc);
+    void runCommand(std::string command, const char *mode, SPL::MyVector<SPL::Process> &proc);
+}
 #endif

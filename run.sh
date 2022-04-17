@@ -2,4 +2,4 @@
 
 #g++ -std=c++17 -Wshadow -Wall -o main src/* -g -fsanitize=address -fsanitize=undefined -D_GLIBCXX_DEBUG
 
-g++ -std=c++17 -o main src/* -lpthread -fconcepts
+g++ -std=c++17 -o main src/* -lpthread -lX11 -fconcepts

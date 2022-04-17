@@ -1,19 +1,19 @@
 #include "../include/bst.h"
 
-BST::BST()
+SPL::BST::BST()
 {
     root = NULL;
 }
-BST::BST(MyVector<Process> &proc)
+SPL::BST::BST(SPL::MyVector<SPL::Process> &proc)
 {
-    BST();
+    SPL::BST();
     root = NULL;
     for (int i = 0; i < (int)proc.size(); i++)
         insert(proc[i]);
 }
-BST_Node *BST::new_node(Process &x)
+SPL::BST_Node *SPL::BST::new_node(SPL::Process &x)
 {
-    BST_Node *temp = new BST_Node;
+    SPL::BST_Node *temp = new SPL::BST_Node;
     temp->data = x;
     temp->left = NULL;
     temp->right = NULL;
@@ -21,15 +21,15 @@ BST_Node *BST::new_node(Process &x)
     return temp;
 }
 
-void BST::insert(Process &x)
+void SPL::BST::insert(SPL::Process &x)
 {
     insert(root, x);
 }
-void BST::insert(BST_Node *cur, Process &x)
+void SPL::BST::insert(SPL::BST_Node *cur, SPL::Process &x)
 {
     if (root == NULL)
     {
-        root = new BST_Node;
+        root = new SPL::BST_Node;
         root->data = x;
         root->left = NULL;
         root->right = NULL;
@@ -71,12 +71,12 @@ void BST::insert(BST_Node *cur, Process &x)
     }
 }
 
-BST_Node* BST::search(std::string name)
+SPL::BST_Node* SPL::BST::search(std::string name)
 {
     return search(root, name);
 }
 
-BST_Node* BST::search(BST_Node *cur, std::string &name)
+SPL::BST_Node* SPL::BST::search(SPL::BST_Node *cur, std::string &name)
 {
     if (cur == NULL)
         return NULL;
@@ -88,18 +88,18 @@ BST_Node* BST::search(BST_Node *cur, std::string &name)
         return search(cur->left, name);
 }
 
-void BST::printBST()
+void SPL::BST::printBST()
 {
     printBST(root);
 }
 
-void BST::printBST(BST_Node *cur)
+void SPL::BST::printBST(SPL::BST_Node *cur)
 {
     if (cur == NULL)
         return;
     printBST(cur->left);
     cur->data.displayProcess();
-    Time temp;
+    SPL::Time temp;
     for (auto time : cur->process_sessions)
     {
         temp = temp + time;
@@ -111,13 +111,13 @@ void BST::printBST(BST_Node *cur)
     printBST(cur->right);
 }
 
-void BST::update(BST &x)
+void SPL::BST::update(SPL::BST &x)
 {
     check_stopped_processes(root, x);
     add_new_nodes(x.root);
 }
 
-void BST::updateTime(BST_Node *cur, Process &x)
+void SPL::BST::updateTime(SPL::BST_Node *cur, SPL::Process &x)
 {   
     if (cur->data.getProcessName() == x.getProcessName())
     {
@@ -150,7 +150,7 @@ void BST::updateTime(BST_Node *cur, Process &x)
             updateTime(cur->left, x);
     }
 }
-void BST::add_new_nodes(BST_Node* cur)
+void SPL::BST::add_new_nodes(SPL::BST_Node* cur)
 {
     if (cur == NULL)
         return;
@@ -160,7 +160,7 @@ void BST::add_new_nodes(BST_Node* cur)
     add_new_nodes(cur->right);
 
 }
-void BST::check_stopped_processes(BST_Node *cur, BST &x)
+void SPL::BST::check_stopped_processes(SPL::BST_Node *cur, SPL::BST &x)
 {
     if (cur == NULL) 
         return;
@@ -170,14 +170,14 @@ void BST::check_stopped_processes(BST_Node *cur, BST &x)
     check_stopped_processes(cur->right, x);
 }
 
-MyVector<BST_Node*>* BST::getProcessList()
+SPL::MyVector<SPL::BST_Node*>* SPL::BST::getProcessList()
 {
-    MyVector<BST_Node*> *process_list = new MyVector<BST_Node*>;
+    SPL::MyVector<SPL::BST_Node*> *process_list = new SPL::MyVector<SPL::BST_Node*>;
     getProcessList(root, *process_list);
     return process_list;
 }
 
-void BST::getProcessList(BST_Node* cur, MyVector<BST_Node*> &process_list)
+void SPL::BST::getProcessList(SPL::BST_Node* cur, SPL::MyVector<SPL::BST_Node*> &process_list)
 {
     if (cur == NULL)
         return;

@@ -27,59 +27,62 @@ extern int start;
 int cnt = 0;
 int key_press_cnt[KEY_CODE_SIZE];
 const char* keyboard_path;
-const char* mouse_path; 
-
-void checkKeyboardButtonPress()
+const char* mouse_path;
+namespace SPL
 {
-    std::string temp_keyb_path = runCommand(Util::getKeyboardPath(),"r");
-    keyboard_path = temp_keyb_path.c_str();
-    int fd = open(keyboard_path, O_RDONLY);
-
-    input keyboard;
-    bool ignore_this_keypress = 0;
-    while (1)
+    void checkKeyboardButtonPress()
     {
-        if (read(fd, &keyboard, sizeof keyboard))
+        std::string temp_keyb_path = SPL::runCommand(SPL::Util::getKeyboardPath(), "r");
+        keyboard_path = temp_keyb_path.c_str();
+        int fd = open(keyboard_path, O_RDONLY);
+
+        SPL::input keyboard;
+        bool ignore_this_keypress = 0;
+        while (1)
         {
-            if (keyboard.type == 1) // EV.KEY is 1
-            {   
-                if (ignore_this_keypress)
-                {
-                    ignore_this_keypress = 0;
-                    continue;
-                }
-                is_idle = 0;
-                InactivityStart.setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
-
-                key_press_cnt[keyboard.code]++;
-                ignore_this_keypress = 1;
-                
-                printf("%s = %d\n", key_codes[keyboard.code].c_str(), key_press_cnt[keyboard.code]);
-                fflush(stdin);
-            }
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    }
-}
-
-void checkMouseActivity()
-{
-    std::string temp_mouse_path = runCommand(Util::getMousePath(),"r");
-    mouse_path = temp_mouse_path.c_str();
-    int fd = open(mouse_path, O_RDONLY);
-
-    input mouse;
-    while (1){
-    
-        if (read(fd, &mouse, sizeof mouse))
-        {
-            if (mouse.type == 1 || mouse.type == 2)
+            if (read(fd, &keyboard, sizeof keyboard))
             {
-                is_idle = 0;
-                start = clock();
-                InactivityStart.setTime(runCommand(Util::getCurrentTimeCommand(), "r"));
+                if (keyboard.type == 1) // EV.KEY is 1
+                {
+                    if (ignore_this_keypress)
+                    {
+                        ignore_this_keypress = 0;
+                        continue;
+                    }
+                    is_idle = 0;
+                    InactivityStart.setTime(SPL::runCommand(SPL::Util::getCurrentTimeCommand(), "r"));
+
+                    key_press_cnt[keyboard.code]++;
+                    ignore_this_keypress = 1;
+
+                    printf("%s = %d\n", key_codes[keyboard.code].c_str(), key_press_cnt[keyboard.code]);
+                    fflush(stdin);
+                }
             }
+            std::this_thread::sleep_for(std::chrono::milliseconds(5));
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
+
+    void checkMouseActivity()
+    {
+        std::string temp_mouse_path = SPL::runCommand(SPL::Util::getMousePath(), "r");
+        mouse_path = temp_mouse_path.c_str();
+        int fd = open(mouse_path, O_RDONLY);
+
+        SPL::input mouse;
+        while (1)
+        {
+
+            if (read(fd, &mouse, sizeof mouse))
+            {
+                if (mouse.type == 1 || mouse.type == 2)
+                {
+                    is_idle = 0;
+                    start = clock();
+                    InactivityStart.setTime(SPL::runCommand(SPL::Util::getCurrentTimeCommand(), "r"));
+                }
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        }
     }
 }
