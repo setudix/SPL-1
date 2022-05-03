@@ -32,3 +32,7 @@ std::string SPL::Util::getPwdCommand()
 {
     return "pwd";
 }
+std::string SPL::Util::getKillCommand()
+{
+    return "kill";
+}

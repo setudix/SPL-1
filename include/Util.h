@@ -15,6 +15,7 @@ namespace SPL
         static std::string getKeyboardPath();
         static std::string getMousePath();
         static std::string getPwdCommand();
+        static std::string getKillCommand();
     };
 }
 #endif

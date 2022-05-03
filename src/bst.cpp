@@ -8,13 +8,18 @@ SPL::BST::BST(SPL::MyVector<SPL::Process> &proc)
 {
     SPL::BST();
     root = NULL;
-    for (int i = 0; i < (int)proc.size(); i++)
+    insert(proc);
+}
+void SPL::BST::insert(SPL::MyVector<SPL::Process> &proc)
+{
+    for (int i = 1; i < (int)proc.size(); i++)
         insert(proc[i]);
 }
-SPL::BST_Node *SPL::BST::new_node(SPL::Process &x)
+SPL::BST_Node *SPL::BST::newNode(SPL::Process &x)
 {
     SPL::BST_Node *temp = new SPL::BST_Node;
     temp->data = x;
+    temp->active = true;
     temp->left = NULL;
     temp->right = NULL;
     temp->process_sessions.push_back(x.getActiveTime());
@@ -31,6 +36,7 @@ void SPL::BST::insert(SPL::BST_Node *cur, SPL::Process &x)
     {
         root = new SPL::BST_Node;
         root->data = x;
+        root->active = true;
         root->left = NULL;
         root->right = NULL;
         root->process_sessions.push_back(x.getActiveTime());
@@ -52,7 +58,7 @@ void SPL::BST::insert(SPL::BST_Node *cur, SPL::Process &x)
         {
             if (cur->right == NULL)
             {
-                cur->right = new_node(x);
+                cur->right = newNode(x);
                 return;
             }
             else
@@ -62,7 +68,7 @@ void SPL::BST::insert(SPL::BST_Node *cur, SPL::Process &x)
         {
             if (cur->left == NULL)
             {
-                cur->left = new_node(x);
+                cur->left = newNode(x);
                 return;
             }
             else
@@ -122,18 +128,24 @@ void SPL::BST::updateTime(SPL::BST_Node *cur, SPL::Process &x)
     if (cur->data.getProcessName() == x.getProcessName())
     {
         cur->data = x;
-        if (cur->stopped < (int)cur->process_sessions.size())
+        // if (cur->stopped < (int)cur->process_sessions.size())
+        //     cur->process_sessions[cur->stopped] = cur->data.getActiveTime();
+        // else 
+        //     cur->process_sessions.push_back(cur->data.getActiveTime());
+        if (cur->active)
             cur->process_sessions[cur->stopped] = cur->data.getActiveTime();
         else 
+        {
             cur->process_sessions.push_back(cur->data.getActiveTime());
-
+            cur->active = true;
+        }
         return;
     }
     if (cur->data < x)
     {
         if (cur->right == NULL)
         {
-            cur->right = new_node(x);
+            cur->right = newNode(x);
             return;
         }
         else
@@ -143,7 +155,7 @@ void SPL::BST::updateTime(SPL::BST_Node *cur, SPL::Process &x)
     {
         if (cur->left == NULL)
         {
-            cur->left = new_node(x);
+            cur->left = newNode(x);
             return;
         }
         else
@@ -166,7 +178,16 @@ void SPL::BST::check_stopped_processes(SPL::BST_Node *cur, SPL::BST &x)
         return;
     check_stopped_processes(cur->left, x);
     if (x.search(cur->data.getProcessName()) == NULL)
-        cur->stopped++;
+        {
+            if (cur->active)
+            {
+                cur->stopped++;
+                cur->active = false;
+                printf("process : %s is stopped\n" , cur->data.getProcessName().c_str());
+            }
+
+                
+        }
     check_stopped_processes(cur->right, x);
 }
 
@@ -184,4 +205,24 @@ void SPL::BST::getProcessList(SPL::BST_Node* cur, SPL::MyVector<SPL::BST_Node*> 
     getProcessList(cur->left, process_list);
     process_list.push_back(cur);
     getProcessList(cur->right, process_list);
+}
+
+void SPL::BST::lock()
+{
+    guard.lock();
+}
+
+void SPL::BST::unlock()
+{
+    guard.unlock();
+}
+
+SPL::Time SPL::BST::getTotalActiveTime(SPL::BST_Node* cur) 
+{
+    SPL::Time totalTime;
+
+    for (SPL::Time t : cur->process_sessions)
+        totalTime = totalTime + t;
+
+    return totalTime;
 }
