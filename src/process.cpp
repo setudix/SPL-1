@@ -8,6 +8,18 @@
 SPL::Process::Process()
 {
 }
+
+SPL::Process::Process(std::string &user, int &pid, int &ppid, std::string &comm, 
+    long long &startTime, long long &activeTime, long long &lastActive)
+{
+    this->user = user;
+    this->pid = pid;
+    this->ppid = ppid;
+    this->comm = comm;
+    this->start_time.setTime(startTime);
+    this->active_time.setTime(activeTime);
+    this->last_active.setTime(lastActive);
+}    
 SPL::Process::Process(std::string str)
 {
     setProcess(str);

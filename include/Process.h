@@ -28,6 +28,8 @@ namespace SPL
         Process();
         Process(std::string str, Time current_time);
         Process(std::string str);
+        Process(std::string &user, int &pid, int &ppid, std::string &comm, 
+            long long &startTime, long long &activeTime, long long &lastActive);
         void setProcess(std::string str);
         static void displayProcess(MyVector<Process> &proc);
         void displayProcess();

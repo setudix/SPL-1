@@ -6,6 +6,7 @@
 #include <chrono>
 #include <fstream>
 #include <atomic> 
+#include <csignal>
 
 #include "../include/Process.h"
 #include "../include/commands.h"
