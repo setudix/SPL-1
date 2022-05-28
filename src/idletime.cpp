@@ -7,6 +7,7 @@
 #include "../include/Time.h"
 #include "../include/commands.h"
 #include "../include/Util.h"
+#include "../include/idletime.h"
 
 // setting the idle time
 #define IDLETIME 5

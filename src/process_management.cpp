@@ -22,6 +22,7 @@ void write_process_to_file(SPL::MyVector<SPL::BST_Node*> &process_list)
         long long lastActive;
 
         bool active;
+        bool user_opened;
         int stopped;
         
         for (SPL::BST_Node *process_info_node : process_list)
@@ -34,8 +35,9 @@ void write_process_to_file(SPL::MyVector<SPL::BST_Node*> &process_list)
             activeTime = process_info_node->data.getActiveTime().getTimeInSeconds();
             lastActive = process_info_node->data.getLastActiveTime().getTimeInSeconds();
 
-            // it will remain false as the data will be fetching when the system restarts
+            // it will remain false as the data will be fetched when the system restarts
             active = false;
+            user_opened = process_info_node->user_opened;
             stopped = (int)process_info_node->process_sessions.size();
 
             file << user << " ";
@@ -47,6 +49,7 @@ void write_process_to_file(SPL::MyVector<SPL::BST_Node*> &process_list)
             file << lastActive << " ";
 
             file << active << " ";
+            file << user_opened << " ";
             file << stopped << " ";
             if (stopped != 1)
                 for (SPL::Time x: process_info_node->process_sessions)
@@ -61,6 +64,9 @@ void write_process_to_file(SPL::MyVector<SPL::BST_Node*> &process_list)
                         file << x.getTimeInSeconds() << " ";
             }
 
+            for (int keyFreq : process_info_node->key_frequency)
+                file << keyFreq << " ";
+                
             file << "\n";
         }
         file.close();
@@ -98,9 +104,9 @@ SPL::BST* getProcessInfoBST()
 
     if (isDataRestored)
     {
-        puts("-----RUNNING PS COMMAND----");
+        // puts("-----RUNNING PS COMMAND----");
         getProcInfo();
-        puts("-----DONE RUNNING PS COMMAND");
+        // puts("-----DONE RUNNING PS COMMAND");
     }
     else 
     {
@@ -229,30 +235,35 @@ namespace SPL
             puts("--------------------------------------");
             root_BST->lock();
                 SPL::BST_Node *temp = root_BST->search(activeWindow.get_active_window_name());
-                // SPL::BST_Node *temp = root_BST->search("ps");
-            root_BST->unlock();
-            if (temp != NULL)
-            {
-                printf("%s\n", temp->data.getProcessName().c_str());
-                printf(" === ");
-                SPL::Time tempTime;
-                for (auto time : temp->process_sessions)
+                if (temp != NULL)
                 {
-                    time.displayTime();
-                    printf(" ");
-                    tempTime = tempTime + time;
+                    temp->user_opened = true;
                 }
-                puts("");
-                printf("total = ");
-                tempTime.displayTime();
-                puts("");
+            root_BST->unlock();
+            // if (temp != NULL)
+            // {
+            //     printf("%s\n", temp->data.getProcessName().c_str());
+            //     printf(" === ");
+            //     SPL::Time tempTime;
+            //     for (auto time : temp->process_sessions)
+            //     {
+            //         time.displayTime();
+            //         printf(" ");
+            //         tempTime = tempTime + time;
+            //     }
+            //     puts("");
+            //     printf("total = ");
+            //     tempTime.displayTime();
+            //     puts("");
 
-                puts("");
-            }
-            puts("**************************************");
-            SPL::Time a(SPL::runCommand(SPL::Util::getCurrentTimeCommand(), "r"));
-            a.displayTime();
-            puts("");
+            //     puts("");
+            // }
+            // puts("**************************************");
+            // SPL::Time a(SPL::runCommand(SPL::Util::getCurrentTimeCommand(), "r"));
+            // a.displayTime();
+            // puts("");
+
+            
             
             root_BST->lock();
                 write_process(*root_BST);

@@ -26,8 +26,8 @@
 extern int start;
 int cnt = 0;
 int key_press_cnt[KEY_CODE_SIZE];
-const char* keyboard_path;
-const char* mouse_path;
+const char *keyboard_path;
+const char *mouse_path;
 namespace SPL
 {
     void checkKeyboardButtonPress()
@@ -55,7 +55,7 @@ namespace SPL
                     key_press_cnt[keyboard.code]++;
                     ignore_this_keypress = 1;
 
-                    printf("%s = %d\n", key_codes[keyboard.code].c_str(), key_press_cnt[keyboard.code]);
+                    // printf("%s = %d\n", key_codes[keyboard.code].c_str(), key_press_cnt[keyboard.code]);
                     fflush(stdin);
                 }
             }
@@ -83,6 +83,48 @@ namespace SPL
                 }
             }
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        }
+    }
+
+    void countKeyPress()
+    {
+        while (keyboard_path == NULL)
+        {
+            puts("keyboard path not set. sleeping");
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        }
+        int fd = open(keyboard_path, O_RDONLY);
+
+        SPL::ActiveWindow activeWindow;
+        std::string *activeWindowName = new std::string;
+        SPL::input keyboard;
+        bool ignore_this_keypress = 0;
+
+        while (1)
+        {
+            if (read(fd, &keyboard, sizeof keyboard))
+            {
+                if (keyboard.type == 1) // EV.KEY is 1
+                {
+                    if (ignore_this_keypress)
+                    {
+                        ignore_this_keypress = 0;
+                        continue;
+                    }
+
+                    ignore_this_keypress = 1;
+                    root_BST->lock();
+                        SPL::BST_Node *temp = root_BST->search(activeWindow.get_active_window_name());
+
+                        if (temp != NULL)
+                        {
+                            temp->key_frequency[keyboard.code]++;
+                            printf("process name : %s , %s = %d \n",activeWindow.get_active_window_name().c_str(), key_codes[keyboard.code].c_str(), temp->key_frequency[keyboard.code]);
+                        }                
+                    root_BST->unlock();
+                }
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(5));
         }
     }
 }

@@ -28,12 +28,13 @@ int main()
     std::thread mouse_thread(SPL::checkMouseActivity);
     std::thread idle_time_thread(SPL::elapsedTime);
     std::thread process_management_thread(SPL::checkProcess);
+    std::thread keypress_thread(SPL::countKeyPress);
 
     keyboard_thread.join();
     mouse_thread.join();
     idle_time_thread.join();
     process_management_thread.join();
-
+    keypress_thread.join();
 
     // SPL::SafeVector<int> sv;
     // sv.safeVector_mutex.lock();

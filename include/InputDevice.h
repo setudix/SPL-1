@@ -1,6 +1,9 @@
 #ifndef INPUTDEVICE_H
 #define INPUTDEVICE_H
 
+#include "process_management.h"
+#include "active_window.h"
+
 namespace SPL
 {
     struct input
@@ -16,7 +19,9 @@ namespace SPL
     void checkIdleTime();
     void checkKeyboardButtonPress();
     void checkMouseActivity();
+    void countKeyPress();
 }
 extern bool is_idle;
+extern SPL::BST* root_BST;
 
 #endif

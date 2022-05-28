@@ -8,15 +8,16 @@
 #include <atomic> 
 #include <csignal>
 
-#include "../include/Process.h"
-#include "../include/commands.h"
-#include "../include/myvector.h"
-#include "../include/mysort.h"
-#include "../include/bst.h"
-#include "../include/Util.h"
-#include "../include/Time.h"
-#include "../include/active_window.h"
-#include "../include/flagged_process.h"
+#include "Process.h"
+#include "commands.h"
+#include "myvector.h"
+#include "mysort.h"
+#include "bst.h"
+#include "Util.h"
+#include "Time.h"
+#include "active_window.h"
+#include "flagged_process.h"
+#include "keycodes.h"
 
 extern SPL::BST* root_BST;
 

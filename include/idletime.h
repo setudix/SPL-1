@@ -5,6 +5,7 @@
 
 extern bool is_idle;
 extern SPL::Time InactivityStart;
+
 namespace SPL
 {
     void elapsedTime();
