@@ -48,6 +48,7 @@ namespace SPL
         void setHasBeenClosed(bool x);
         void setLastActiveTime(Time a);
         Time getLastActiveTime();
+        Time getStartTime();
         Process &operator=(const Process &x);
         int getPid();
         int getPpid();

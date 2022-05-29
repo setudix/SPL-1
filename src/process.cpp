@@ -264,3 +264,8 @@ int SPL::Process::getPpid()
 {
     return ppid;
 }
+
+SPL::Time SPL::Process::getStartTime()
+{
+    return start_time;
+}

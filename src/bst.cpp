@@ -10,6 +10,10 @@ SPL::BST::BST(SPL::MyVector<SPL::Process> &proc)
     root = NULL;
     insert(proc);
 }
+SPL::BST::~BST()
+{
+    delete root;
+}
 void SPL::BST::insert(SPL::MyVector<SPL::Process> &proc)
 {
     for (int i = 1; i < (int)proc.size(); i++)
@@ -64,9 +68,6 @@ void SPL::BST::insert(SPL::BST_Node *cur, SPL::Process &x)
     {
         if (cur->data.getProcessName() == x.getProcessName())
         {
-            // not yet entirely sure how this should work.
-            // for now it should just update if we find a process which
-            // was started before the one that is in the bst.
             if (cur->data.getTime() > x.getTime())
                 cur->data = x;
             return;
@@ -148,16 +149,24 @@ void SPL::BST::updateTime(SPL::BST_Node *cur, SPL::Process &x)
 {   
     if (cur->data.getProcessName() == x.getProcessName())
     {
-        cur->data = x;
         if (cur->active)
-            cur->process_sessions[cur->stopped] = cur->data.getActiveTime();
+            cur->process_sessions[cur->stopped] = x.getActiveTime();
         else 
         {
-            if (cur->user_opened)
-                printf("Process new session: %s\n", cur->data.getProcessName().c_str());
-            cur->process_sessions.push_back(cur->data.getActiveTime());
+            if (cur->data.getStartTime() != x.getStartTime()){    
+                if (cur->user_opened)
+                    printf("Process new session: %s\n", cur->data.getProcessName().c_str());
+                cur->process_sessions.push_back(cur->data.getActiveTime());
+            }
+            else 
+            {
+                cur->stopped--;
+                cur->process_sessions[cur->stopped] = x.getActiveTime();
+                
+            }
             cur->active = true;
         }
+        cur->data = x;
         return;
     }
     if (cur->data < x)

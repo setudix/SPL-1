@@ -191,7 +191,6 @@ namespace SPL
                 delete timeFromCurrentSession;
                 if (flaggedProcess.mode == 'd')
                 {
-                    printf("process name : %s, max time : %lld, running time: %lld\n", cur->data.getProcessName().c_str(), flaggedProcess.maxActiveTimeForDay.getTimeInSeconds(), tempTotalTime.getTimeInSeconds());
                     if (tempTotalTime > flaggedProcess.maxActiveTimeForDay)
                         killProcess(cur);
                 }
@@ -204,6 +203,7 @@ namespace SPL
         SPL::ActiveWindow activeWindow;
         auto f = [](int sig){
             write_process(*root_BST);
+            delete root_BST;
             exit(0);
             };
         while (1)
@@ -211,15 +211,6 @@ namespace SPL
             if (root_BST == NULL)
             {   
                 root_BST = getProcessInfoBST();
-                // root_BST->printBST();
-                // BST_Node *bn = root_BST->search("gedit");
-                // if (bn != NULL)
-                //     puts("gedit found");
-                // else 
-                //     puts("gedit not found");
-                // puts(""); 
-                // root_BST->printBST();
-                puts("");
                 continue;
             }
             else
@@ -227,9 +218,8 @@ namespace SPL
                 SPL::BST *temp = getProcessInfoBST();
                 root_BST->lock();
                     root_BST->update(*temp);
-                    // root_BST->printBST();
                 root_BST->unlock();
-                // parentalControl(*temp);
+                parentalControl(*temp);
                 delete temp;
             }
             puts("--------------------------------------");
@@ -238,27 +228,24 @@ namespace SPL
                 if (temp != NULL)
                 {
                     temp->user_opened = true;
+                    printf("%s\n", temp->data.getProcessName().c_str());
+                    printf(" === ");
+                    SPL::Time tempTime;
+                    for (auto time : temp->process_sessions)
+                    {
+                        time.displayTime();
+                        printf(" ");
+                        tempTime = tempTime + time;
+                    }
+                    puts("");
+                    printf("total = ");
+                    tempTime.displayTime();
+                    puts("");
+
+                    puts("");
                 }
             root_BST->unlock();
-            // if (temp != NULL)
-            // {
-            //     printf("%s\n", temp->data.getProcessName().c_str());
-            //     printf(" === ");
-            //     SPL::Time tempTime;
-            //     for (auto time : temp->process_sessions)
-            //     {
-            //         time.displayTime();
-            //         printf(" ");
-            //         tempTime = tempTime + time;
-            //     }
-            //     puts("");
-            //     printf("total = ");
-            //     tempTime.displayTime();
-            //     puts("");
-
-            //     puts("");
-            // }
-            // puts("**************************************");
+            puts("**************************************");
             // SPL::Time a(SPL::runCommand(SPL::Util::getCurrentTimeCommand(), "r"));
             // a.displayTime();
             // puts("");

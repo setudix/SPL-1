@@ -19,13 +19,11 @@ int start;
 int idle_time_start;
 
 SPL::Time InactivityStart;
-#define TEST 1
 
 void setStartTime()
 {
     InactivityStart.setTime(SPL::runCommand(SPL::Util::getCurrentTimeCommand(), "r"));
 }
-#ifdef TEST
 
 void getIdleTime(SPL::Time &IdleTimeStart, SPL::Time &IdleTime)
 {
@@ -45,7 +43,7 @@ void write_idletime(SPL::Time &IdleTime)
     // std::string filename = runCommand("pwd","r");
     // filename += "/logs/idletime/f.txt";
 
-    printf("%s\n",filename.c_str());
+    // printf("%s\n",filename.c_str());
 
     file.open(filename, std::ios::in);
 
@@ -97,7 +95,7 @@ namespace SPL
                     printf("Idle for :");
                     IdleTime->displayTime();
                     puts("");
-                    // // write_idletime(*IdleTime);
+                    write_idletime(*IdleTime);
                 }
                 delete IdleTime;
                 delete IdleTimeStart;
@@ -105,39 +103,3 @@ namespace SPL
         }
     }
 }
-
-#endif
-
-#ifndef TEST
-
-double getIdleTime()
-{
-    double idle_time = -1.0;
-    while (is_idle)
-    {
-        idle_time = (double)(clock() - idle_time_start) / CLOCKS_PER_SEC;
-    }
-    return idle_time;
-}
-void elapsedTime()
-{
-    while (1)
-    {
-        double tmp_time = (double)(clock() - start) / CLOCKS_PER_SEC;
-
-        if (tmp_time > IDLETIME)
-        {
-            printf("IDLE!!\n");
-            idle_time_start = clock();
-            is_idle = 1;
-            double f = getIdleTime();
-            // fflush(stdout);
-            if (f >= 0.0)
-            {
-                printf("idle for -- %lf\n", f);
-            }
-            start = clock();
-        }
-    }
-}
-#endif

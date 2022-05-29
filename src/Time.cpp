@@ -89,7 +89,6 @@ void SPL::Time::setTime(std::string str)
 	// 2022-03-05 03:56:40
 	sscanf(str.c_str(), "%d %*c %d %*c %d %d %*c %d %*c %d",
 		   &year, &month, &day, &hour, &min, &sec);
-	// this is does not account for months and years **yet**
 	time_in_seconds = day * 86400 + hour * 3600 + min * 60 + sec;
 }
 void SPL::Time::setTime(long long temp)

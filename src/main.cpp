@@ -18,6 +18,7 @@
 #include "../include/mysort.h"
 #include "../include/process_management.h"
 #include "../include/SafeVector.h"
+#include "../include/active_time.h"
 
 int main()
 {
@@ -29,22 +30,15 @@ int main()
     std::thread idle_time_thread(SPL::elapsedTime);
     std::thread process_management_thread(SPL::checkProcess);
     std::thread keypress_thread(SPL::countKeyPress);
+    std::thread uptime_thread(SPL::calculatePcOnTime);
 
     keyboard_thread.join();
     mouse_thread.join();
     idle_time_thread.join();
     process_management_thread.join();
     keypress_thread.join();
-
-    // SPL::SafeVector<int> sv;
-    // sv.safeVector_mutex.lock();
-    // sv.safeVector.push_back(1);
-    // sv.safeVector.push_back(1);
-    // sv.safeVector_mutex.unlock();
-
-    // for(int x : sv.safeVector){
-    //     printf("%d\n",x);
-    // }
+    uptime_thread.join();
+    
     return 0;
 
 }

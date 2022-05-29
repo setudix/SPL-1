@@ -55,7 +55,6 @@ namespace SPL
                     key_press_cnt[keyboard.code]++;
                     ignore_this_keypress = 1;
 
-                    // printf("%s = %d\n", key_codes[keyboard.code].c_str(), key_press_cnt[keyboard.code]);
                     fflush(stdin);
                 }
             }

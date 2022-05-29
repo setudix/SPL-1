@@ -25,6 +25,12 @@ namespace SPL
         BST_Node *right;
         SPL::MyVector<SPL::Time> process_sessions;
         int key_frequency[KEY_CODE_SIZE] = {0};
+        
+        ~BST_Node()
+        {
+            delete left;
+            delete right;
+        }
     };
 
     class BST
@@ -46,6 +52,7 @@ namespace SPL
 
     public:
         BST();
+        ~BST();
         BST(SPL::MyVector<SPL::Process> &proc);
         void insert(SPL::MyVector<SPL::Process> &proc);
         void insert(SPL::Process &x);
